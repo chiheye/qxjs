@@ -1,6 +1,6 @@
 [rewrite_local]
 # 拦截指定请求并提取Cookie
-https://mg.arcfox.cn/user/public/account/getUserInfo url script-response-header https://raw.githubusercontent.com/chiheye/qxjs/main/get_arcfoxcookie.js
+^https:\/\/mg\.arcfox\.cn\/user\/public\/account\/getUserInfo url script-response-header https://raw.githubusercontent.com/chiheye/qxjs/main/get_arcfoxcookie.js
 
 [mitm]
 hostname=mg.arcfox.cn
