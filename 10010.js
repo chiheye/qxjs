@@ -30,51 +30,51 @@ function GetCookie() {
 }
 
 // 签到脚本
-function SignIn() {
-    const url = "https://activity.10010.com/sixPalaceGridTurntableLottery/signin/daySign";
-    const headers = {
-        "Sec-Fetch-Dest": "empty",
-        "Connection": "keep-alive",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Sec-Fetch-Site": "same-site",
-        "Origin": "https://img.client.10010.com",
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 unicom{version:iphone_c@11.0602}",
-        "Sec-Fetch-Mode": "cors",
-        "Cookie": $prefs.valueForKey('10010_cookie') || "", // 使用保存的 Cookie
-        "Host": "activity.10010.com",
-        "Referer": "https://img.client.10010.com/",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept": "application/json, text/plain, */*"
-    };
+// function SignIn() {
+//     const url = "https://activity.10010.com/sixPalaceGridTurntableLottery/signin/daySign";
+//     const headers = {
+//         "Sec-Fetch-Dest": "empty",
+//         "Connection": "keep-alive",
+//         "Accept-Encoding": "gzip, deflate, br",
+//         "Content-Type": "application/x-www-form-urlencoded",
+//         "Sec-Fetch-Site": "same-site",
+//         "Origin": "https://img.client.10010.com",
+//         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 unicom{version:iphone_c@11.0602}",
+//         "Sec-Fetch-Mode": "cors",
+//         "Cookie": $prefs.valueForKey('10010_cookie') || "", // 使用保存的 Cookie
+//         "Host": "activity.10010.com",
+//         "Referer": "https://img.client.10010.com/",
+//         "Accept-Language": "en-US,en;q=0.9",
+//         "Accept": "application/json, text/plain, */*"
+//     };
 
-    const body = `shareCl=&shareCode=`;
+//     const body = `shareCl=&shareCode=`;
 
-    const myRequest = {
-        url: url,
-        method: "POST",
-        headers: headers,
-        body: body
-    };
+//     const myRequest = {
+//         url: url,
+//         method: "POST",
+//         headers: headers,
+//         body: body
+//     };
 
-    $task.fetch(myRequest).then(response => {
-        const data = JSON.parse(response.body);
-        if (data.code === "0000") {
-            $notify("签到成功", "奖励", data.data.redSignMessage);
-        } else if (data.code === "0002") {
-            $notify("重复任务", "提示", data.desc);
-        } else {
-            $notify("签到失败", "未知错误", data.desc);
-        }
-        $done();
-    }).catch(error => {
-        $notify("签到失败", "错误", error.message);
-        $done();
-    });
-}
+//     $task.fetch(myRequest).then(response => {
+//         const data = JSON.parse(response.body);
+//         if (data.code === "0000") {
+//             $notify("签到成功", "奖励", data.data.redSignMessage);
+//         } else if (data.code === "0002") {
+//             $notify("重复任务", "提示", data.desc);
+//         } else {
+//             $notify("签到失败", "未知错误", data.desc);
+//         }
+//         $done();
+//     }).catch(error => {
+//         $notify("签到失败", "错误", error.message);
+//         $done();
+//     });
+// }
 
-// 调用签到脚本
-SignIn();
+// // 调用签到脚本
+// SignIn();
 
 
 
