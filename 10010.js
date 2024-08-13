@@ -18,7 +18,7 @@ hostname= activity.10010.com
 function GetCookie() {
     const cookie = $request.headers['Cookie'] || $request.headers['cookie'];
     if (cookie) {
-        $prefs.setValueForKey(cookie, '10010_cookie');
+        $persistentStore.write(cookie, '10010_cookie');
         console.log('Cookie保存成功：' + cookie);
         $notify("中国联通", "Cookie保存成功", "");
         $done();
@@ -45,7 +45,7 @@ function SignIn() {
         "Referer": "https://img.client.10010.com/",
         "Connection": "keep-alive",
         "Sec-Fetch-Dest": "empty",
-        "Cookie": $prefs.getValueForKey('10010_cookie') || "" // 使用保存的 Cookie
+        "Cookie": $persistentStore.read('10010_cookie') || "" // 使用保存的 Cookie
     };
 
     const requestBody = ""; // 修改为实际的请求参数
@@ -63,8 +63,8 @@ function SignIn() {
             $notify("重复任务", "提示", data.desc);
         } else {
             $notify("签到失败", "未知错误", data.desc);
-            $done();
         }
+        $done();
     }).catch(error => {
         $notify("签到失败", "错误", error.message);
         $done();
@@ -73,6 +73,7 @@ function SignIn() {
 
 // 调用签到脚本
 SignIn();
+
 
 // 注意：GetCookie() 函数应在获取到 Cookie 后自动触发，
 // 可以将 GetCookie() 函数与自动化脚本的执行逻辑结合，确保 Cookie 获取成功后再执行 SignIn() 函数。
