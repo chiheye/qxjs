@@ -17,75 +17,99 @@ hostname= mg.arcfox.cn
 
 
 */
-const requestUrl = 'https://mg.arcfox.cn/mall-integral/public/integral/getUserIntegral';
-const method = 'GET';
+const url = 'https://mg.arcfox.cn/mall-integral/public/integral/getUserIntegral';
 
-// 首先从特定 URL 抓取动态参数
-const paramUrl = 'https://mg.arcfox.cn/mall-integral/public/integral/getUserIntegral';  // 假设的参数获取 URL
+// 请求头字段
+const headers = {
+    'Host': 'mg.arcfox.cn',
+    'Accept': '*/*',
+    'appversion': '2.0.57',
+    'Accept-Encoding': 'gzip;q=1.0, compress;q=0.5',
+    'Accept-Language': 'zh-Hans-CN;q=1.0, en-CN;q=0.9, zh-Hant-CN;q=0.8',
+    'User-Agent': 'BMSuperApp/2.0.57 (com.bxbe.arcfox; build:537; iOS 16.7.2) Alamofire/4.9.1',
+    'Connection': 'keep-alive'
+};
 
-function fetchParams() {
-    const headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        'Accept': 'application/json, text/plain, */*',
-        'Connection': 'keep-alive'
-    };
-
-    $task.fetch({ url: paramUrl, method: method, headers: headers }).then(response => {
-        const responseBody = response.body;
-        const json = JSON.parse(responseBody);
-
-        if (json && json.data) {
-            const { appkey, nonce, sign, token } = json.data;
-
-            if (appkey && nonce && sign && token) {
-                console.log(`获取到参数：appkey=${appkey}, nonce=${nonce}, sign=${sign}, token=${token}`);
-                autoCheckIn(appkey, nonce, sign, token);
-            } else {
-                console.log('未能获取到所有必需的参数');
-                $notify("ArcFox 签到", "获取参数失败", "请检查获取参数的 URL 或服务是否正常。");
-                $done();
-            }
-        } else {
-            console.log('获取参数失败，返回数据不合法');
-            $notify("ArcFox 签到", "获取参数失败", "返回的数据不合法，请检查脚本或联系支持。");
+// 获取动态参数和 Cookie 的请求
+const fetchParamsAndCookie = () => {
+    const paramsUrl = 'https://mg.arcfox.cn/mall-integral/public/integral/getUserIntegralParams'; // 假设存在此 URL 获取动态参数
+    $task.fetch({ url: paramsUrl, method: 'GET', headers: headers }).then(response => {
+        if (response.statusCode !== 200) {
+            console.log('获取动态参数失败');
+            $notify("Arcfox 签到", "获取动态参数失败", "请检查请求地址或网络连接");
             $done();
+            return;
         }
+
+        const data = JSON.parse(response.body);
+        const { appkey, nonce, sign, token } = data;
+
+        // 保存动态参数和 Cookie
+        $prefs.setValueForKey(appkey, 'arcfox_appkey');
+        $prefs.setValueForKey(nonce, 'arcfox_nonce');
+        $prefs.setValueForKey(sign, 'arcfox_sign');
+        $prefs.setValueForKey(token, 'arcfox_token');
+        $prefs.setValueForKey(response.headers['Set-Cookie'], 'arcfox_cookie');
+
+        console.log('动态参数和 Cookie 保存成功');
+        $notify("Arcfox 签到", "动态参数和 Cookie 保存成功", "");
+        $done();
+
+        // 执行签到
+        SignIn();
     }, reason => {
-        console.log('获取参数请求失败: ' + reason.error);
-        $notify("ArcFox 签到", "获取参数失败", reason.error);
+        console.log('获取动态参数失败: ' + reason.error);
+        $notify("Arcfox 签到", "获取动态参数失败", reason.error);
         $done();
     });
 }
 
-function autoCheckIn(appkey, nonce, sign, token) {
-    const url = `${requestUrl}?appkey=${appkey}&nonce=${nonce}&sign=${sign}&signt=${Date.now()}&token=${token}`;
+function SignIn() {
+    const appkey = $prefs.valueForKey('arcfox_appkey');
+    const nonce = $prefs.valueForKey('arcfox_nonce');
+    const sign = $prefs.valueForKey('arcfox_sign');
+    const token = $prefs.valueForKey('arcfox_token');
+    const cookie = $prefs.valueForKey('arcfox_cookie');
 
-    const headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        'Accept': 'application/json, text/plain, */*',
-        'Connection': 'keep-alive'
+    if (!appkey || !nonce || !sign || !token || !cookie) {
+        console.log('无法签到：未找到必要参数');
+        $notify("Arcfox 签到", "签到失败", "未找到必要的参数，请先获取参数再试。");
+        $done();
+        return;
+    }
+
+    const requestHeaders = {
+        ...headers,
+        'Cookie': cookie
     };
 
-    $task.fetch({ url: url, method: method, headers: headers }).then(response => {
-        const responseBody = response.body;
-        const json = JSON.parse(responseBody);
+    const myRequest = {
+        url: `${url}?appkey=${appkey}&nonce=${nonce}&sign=${sign}&signt=${Date.now()}&token=${token}`,
+        method: 'GET',
+        headers: requestHeaders
+    };
 
-        if (json.status === 'SUCCEED') {
-            console.log('签到成功：' + responseBody);
-            $notify("ArcFox 签到", "签到成功", "签到成功！");
+    $task.fetch(myRequest).then(response => {
+        const responseBody = response.body;
+        const responseData = JSON.parse(responseBody);
+
+        if (responseData.status === 'SUCCEED') {
+            console.log('签到成功');
+            $notify("Arcfox 签到", "签到成功", `积分: ${responseData.data.integral}`);
             $done();
         } else {
-            console.log('签到失败：' + responseBody);
-            $notify("ArcFox 签到", "签到失败", "签到失败，返回数据：" + responseBody);
+            console.log('签到失败');
+            $notify("Arcfox 签到", "签到失败", "签到失败，请检查请求或联系支持。");
             $done();
         }
         $done();
     }, reason => {
         console.log('签到请求失败: ' + reason.error);
-        $notify("ArcFox 签到", "签到失败", reason.error);
+        $notify("Arcfox 签到", "签到失败", reason.error);
         $done();
     });
 }
 
-// 启动脚本
-fetchParams();
+// 执行脚本
+fetchParamsAndCookie();
+
