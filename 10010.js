@@ -18,16 +18,25 @@ hostname= activity.10010.com
 function GetCookie() {
     const cookie = $request.headers['Cookie'] || $request.headers['cookie'];
     if (cookie) {
+        console.log('收到的请求头：', JSON.stringify($request.headers));
+        console.log('Cookie：' + cookie);
         $prefs.setValueForKey(cookie, '10010_cookie');
-        console.log('Cookie保存成功：' + cookie);
         $notify("中国联通", "Cookie保存成功", "Cookie已保存，可以进行签到操作。");
-        $done();
     } else {
         console.log('获取Cookie失败');
         $notify("中国联通", "Cookie获取失败", "未能获取到Cookie，请检查设置。");
-        $done();
     }
+    $done();
 }
+
+// 调用获取 Cookie 脚本
+if ($request) {
+    GetCookie(); // 获取 Cookie 的情况下调用
+} else {
+    $notify("中国联通", "错误", "脚本未在请求中运行。");
+    $done();
+}
+
 
 // 签到脚本
 // function SignIn() {
