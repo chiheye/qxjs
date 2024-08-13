@@ -1,3 +1,5 @@
+/*个人使用*/
+
 const url = 'https://www.52pojie.cn/home.php?mod=task&do=apply&id=2';
 const method = 'GET';
 let cookie = $prefs.valueForKey('cookie_52pojie'); // 从存储中读取cookie
