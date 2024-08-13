@@ -1,3 +1,20 @@
+/*
+吾爱破解签到脚本
+************************
+QuantumultX 远程脚本配置:
+************************
+
+
+    
+[rewrite_local]
+# 获取Cookie
+https:\/\/www\.52pojie\.cn\/home\.php\? url script-request-header https://raw.githubusercontent.com/NobyDa/Script/master/52pojie-DailyBonus/52pojie.js
+
+[mitm] 
+hostname= www.52pojie.cn
+
+
+*/
 const url = 'https://www.52pojie.cn/home.php?mod=task&do=apply&id=2';
 const method = 'GET';
 const userAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.50(0x18003237) NetType/WIFI Language/zh_CN';
