@@ -17,6 +17,7 @@ hostname= activity.10010.com
 // 获取并保存 Cookie
 function GetCookie() {
     const cookie = $request.headers['Cookie'] || $request.headers['cookie'];
+    console.log(cookie);
     if (cookie) {
         const saved = $prefs.setValueForKey(cookie, '10010_cookie');
         if (saved) {
