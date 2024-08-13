@@ -7,8 +7,8 @@ QuantumultX 远程脚本配置:
 
     
 [rewrite_local]
-# 获取Cookie
-https:\/\/www\.52pojie\.cn\/home\.php\? url script-request-header https://raw.githubusercontent.com/NobyDa/Script/master/52pojie-DailyBonus/52pojie.js
+# 获取52Cookie
+https:\/\/www\.52pojie\.cn\/home\.php\? url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/main/52qd.js
 
 [mitm] 
 hostname= www.52pojie.cn
