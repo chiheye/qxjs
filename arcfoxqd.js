@@ -21,7 +21,7 @@ const requestUrl = 'https://mg.arcfox.cn/mall-integral/public/integral/getUserIn
 const method = 'GET';
 
 // 首先从特定 URL 抓取动态参数
-const paramUrl = 'https://mg.arcfox.cn/mall-integral/getParams';  // 假设的参数获取 URL
+const paramUrl = 'https://mg.arcfox.cn/mall-integral/public/integral/getUserIntegral';  // 假设的参数获取 URL
 
 function fetchParams() {
     const headers = {
@@ -73,9 +73,11 @@ function autoCheckIn(appkey, nonce, sign, token) {
         if (json.status === 'SUCCEED') {
             console.log('签到成功：' + responseBody);
             $notify("ArcFox 签到", "签到成功", "签到成功！");
+            $done();
         } else {
             console.log('签到失败：' + responseBody);
             $notify("ArcFox 签到", "签到失败", "签到失败，返回数据：" + responseBody);
+            $done();
         }
         $done();
     }, reason => {
