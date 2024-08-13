@@ -14,16 +14,18 @@ https:\/\/activity\.10010\.com\/sixPalaceGridTurntableLottery\/signin\/daySign u
 hostname= activity.10010.com
 */
 
-// 获取 Cookie 并保存
+// 获取并保存 Cookie
 function GetCookie() {
     const cookie = $request.headers['Cookie'] || $request.headers['cookie'];
     if (cookie) {
         $prefs.setValueForKey(cookie, '10010_cookie');
         console.log('Cookie保存成功：' + cookie);
-        $notify("中国联通", "Cookie保存成功", "");
+        $notify("中国联通", "Cookie保存成功", "Cookie已保存，可以进行签到操作。");
+        $done();
     } else {
         console.log('获取Cookie失败');
         $notify("中国联通", "Cookie获取失败", "未能获取到Cookie，请检查设置。");
+        $done();
     }
 }
 
@@ -31,29 +33,31 @@ function GetCookie() {
 function SignIn() {
     const url = "https://activity.10010.com/sixPalaceGridTurntableLottery/signin/daySign";
     const headers = {
-        "Host": "activity.10010.com",
-        "Accept": "application/json, text/plain, */*",
-        "Sec-Fetch-Site": "same-site",
-        "Accept-Language": "en-US,en;q=0.9",
+        "Sec-Fetch-Dest": "empty",
+        "Connection": "keep-alive",
         "Accept-Encoding": "gzip, deflate, br",
-        "Sec-Fetch-Mode": "cors",
         "Content-Type": "application/x-www-form-urlencoded",
+        "Sec-Fetch-Site": "same-site",
         "Origin": "https://img.client.10010.com",
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 unicom{version:iphone_c@11.0602}",
+        "Sec-Fetch-Mode": "cors",
+        "Cookie": $prefs.valueForKey('10010_cookie') || "", // 使用保存的 Cookie
+        "Host": "activity.10010.com",
         "Referer": "https://img.client.10010.com/",
-        "Connection": "keep-alive",
-        "Sec-Fetch-Dest": "empty",
-        "Cookie": $prefs.valueForKey('10010_cookie') || "" // 使用保存的 Cookie
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept": "application/json, text/plain, */*"
     };
 
-    const requestBody = ""; // 修改为实际的请求参数
+    const body = `shareCl=&shareCode=`;
 
-    $task.fetch({
+    const myRequest = {
         url: url,
         method: "POST",
         headers: headers,
-        body: requestBody
-    }).then(response => {
+        body: body
+    };
+
+    $task.fetch(myRequest).then(response => {
         const data = JSON.parse(response.body);
         if (data.code === "0000") {
             $notify("签到成功", "奖励", data.data.redSignMessage);
