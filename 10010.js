@@ -18,10 +18,14 @@ hostname= activity.10010.com
 function GetCookie() {
     const cookie = $request.headers['Cookie'] || $request.headers['cookie'];
     if (cookie) {
-        console.log('收到的请求头：', JSON.stringify($request.headers));
-        console.log('Cookie：' + cookie);
-        $prefs.setValueForKey(cookie, '10010_cookie');
-        $notify("中国联通", "Cookie保存成功", "Cookie已保存，可以进行签到操作。");
+        const saved = $prefs.setValueForKey(cookie, '10010_cookie');
+        if (saved) {
+            console.log('Cookie保存成功：' + cookie);
+            $notify("中国联通", "Cookie保存成功", "Cookie已保存，可以进行签到操作。");
+        } else {
+            console.log('Cookie保存失败');
+            $notify("中国联通", "Cookie保存失败", "无法保存Cookie，请检查脚本设置。");
+        }
     } else {
         console.log('获取Cookie失败');
         $notify("中国联通", "Cookie获取失败", "未能获取到Cookie，请检查设置。");
@@ -29,17 +33,16 @@ function GetCookie() {
     $done();
 }
 
-// 调用获取 Cookie 脚本
-if ($request) {
-    GetCookie(); // 获取 Cookie 的情况下调用
-} else {
-    $notify("中国联通", "错误", "脚本未在请求中运行。");
-    $done();
-}
-
-
 // 签到脚本
 function SignIn() {
+    const cookie = $prefs.valueForKey('10010_cookie');
+    if (!cookie) {
+        console.log('未找到Cookie，无法进行签到');
+        $notify("签到失败", "原因", "未找到有效的Cookie，请先获取Cookie。");
+        $done();
+        return;
+    }
+
     const url = "https://activity.10010.com/sixPalaceGridTurntableLottery/signin/daySign";
     const headers = {
         "Sec-Fetch-Dest": "empty",
@@ -50,7 +53,7 @@ function SignIn() {
         "Origin": "https://img.client.10010.com",
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 unicom{version:iphone_c@11.0602}",
         "Sec-Fetch-Mode": "cors",
-        "Cookie": $prefs.valueForKey('10010_cookie') || "",
+        "Cookie": cookie, // 使用保存的 Cookie
         "Host": "activity.10010.com",
         "Referer": "https://img.client.10010.com/",
         "Accept-Language": "en-US,en;q=0.9",
@@ -67,23 +70,32 @@ function SignIn() {
     };
 
     $task.fetch(myRequest).then(response => {
-        const data = JSON.parse(response.body);
-        if (data.code === "0000") {
-            $notify("签到成功", "奖励", data.data.redSignMessage);
-        } else if (data.code === "0002") {
-            $notify("重复任务", "提示", data.desc);
-        } else {
-            $notify("签到失败", "未知错误", data.desc);
+        try {
+            const data = JSON.parse(response.body);
+            if (data.code === "0000") {
+                $notify("签到成功", "奖励", data.data.redSignMessage);
+            } else if (data.code === "0002") {
+                $notify("重复任务", "提示", data.desc);
+            } else {
+                $notify("签到失败", "未知错误", data.desc);
+            }
+        } catch (error) {
+            $notify("签到失败", "解析错误", "无法解析响应内容：" + error.message);
         }
         $done();
     }).catch(error => {
-        $notify("签到失败", "错误", error.message);
+        $notify("签到失败", "请求错误", error.message);
         $done();
     });
 }
 
-// // 调用签到脚本
-SignIn();
+// 判断是获取 Cookie 还是签到操作
+if ($request && $request.headers) {
+    GetCookie();
+} else {
+    SignIn();
+}
+
 
 
 
