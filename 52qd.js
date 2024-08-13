@@ -74,15 +74,19 @@ function SignIn() {
         if (responseBody.includes('抱歉，本期您已申请过此任务，请下期再来')) {
             console.log("您已申请过此任务");
             $notify("吾爱破解", "签到失败", "您已申请过此任务，请下期再来");
+            $done();  // 结束脚本
         } else if (responseBody.includes('申请任务成功')) {
             console.log("任务申请成功");
             $notify("吾爱破解", "签到成功", "任务申请成功！");
+            $done();  // 结束脚本
         } else {
             console.log("未知状态，返回的数据: " + responseBody);
             $notify("吾爱破解", "签到异常", "返回的结果无法解析，请检查脚本或联系支持。");
+            $done();  // 结束脚本
         }
     }, reason => {
         console.log("签到请求失败: " + reason.error);
         $notify("吾爱破解", "签到失败", reason.error);
+        $done();  // 结束脚本
     });
 }
