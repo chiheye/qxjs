@@ -60,7 +60,7 @@ function SignIn() {
         if (data.code === "0000") {
             $notify("签到成功", "奖励", data.data.redSignMessage);
         } else if (data.code === "0002") {
-            $notify("签到失败", "提示", data.desc);
+            $notify("重复任务", "提示", data.desc);
         } else {
             $notify("签到失败", "未知错误", data.desc);
             $done();
