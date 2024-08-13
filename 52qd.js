@@ -2,33 +2,29 @@ const url = 'https://www.52pojie.cn/home.php?mod=task&do=apply&id=2';
 const method = 'GET';
 const userAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.50(0x18003237) NetType/WIFI Language/zh_CN';
 
-// 判断是否在请求模式下获取 Cookie
 if ($request && $request.headers) {
+    // 自动获取并保存Cookie
     GetCookie();
     $done({});
 } else {
+    // 执行签到
     SignIn();
 }
 
 function GetCookie() {
-    const TM = $prefs.valueForKey("TIME");
-    const CK = $request.headers['Cookie'] || $request.headers['cookie'];
-    if (CK && CK.includes('_auth=')) {
-        $prefs.setValueForKey(CK, "COOKIE");
-        if (!TM || (TM && (Date.now() - TM) / 1000 >= 21600)) {
-            $notify("吾爱破解", "", `写入Cookie成功 🎉`);
-            $prefs.setValueForKey(Date.now().toString(), "TIME");
-        } else {
-            console.log("吾爱破解\n写入Cookie成功 🎉");
-        }
+    const cookie = $request.headers['Cookie'] || $request.headers['cookie'];
+    if (cookie) {
+        $prefs.setValueForKey(cookie, '52pojie_cookie');
+        console.log('Cookie保存成功：' + cookie);
+        $notify("吾爱破解", "Cookie保存成功", "");
     } else {
-        console.log("吾爱破解\n写入Cookie失败, 关键值缺失");
+        console.log('获取Cookie失败');
+        $notify("吾爱破解", "Cookie获取失败", "未能获取到Cookie，请检查设置。");
     }
-    $done();
 }
 
 function SignIn() {
-    const cookie = $prefs.valueForKey("COOKIE");
+    const cookie = $prefs.valueForKey('52pojie_cookie');
 
     if (!cookie) {
         console.log('无法签到：未找到cookie');
