@@ -21,11 +21,9 @@ function GetCookie() {
         $prefs.setValueForKey(cookie, '10010_cookie');
         console.log('Cookie保存成功：' + cookie);
         $notify("中国联通", "Cookie保存成功", "");
-        $done();
     } else {
         console.log('获取Cookie失败');
         $notify("中国联通", "Cookie获取失败", "未能获取到Cookie，请检查设置。");
-        $done();
     }
 }
 
