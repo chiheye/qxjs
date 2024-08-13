@@ -46,7 +46,7 @@ function SignIn() {
         return;
     }
 
-    const url = "https://activity.10010.com/sixPalaceGridTurntableLottery/signin/daySign";
+    const url = "https://act.10010.com/sixPalaceGridTurntableLottery/signin/daySign";
     const headers = {
         "Sec-Fetch-Dest": "empty",
         "Connection": "keep-alive",
