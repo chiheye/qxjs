@@ -17,51 +17,42 @@ hostname= mg.arcfox.cn
 
 
 */
-const url = 'https://mg.arcfox.cn/mall-integral/public/integral/getUserIntegral';
 
-// 请求头字段
-const headers = {
-    'Host': 'mg.arcfox.cn',
-    'Accept': '*/*',
-    'appversion': '2.0.57',
-    'Accept-Encoding': 'gzip;q=1.0, compress;q=0.5',
-    'Accept-Language': 'zh-Hans-CN;q=1.0, en-CN;q=0.9, zh-Hant-CN;q=0.8',
-    'User-Agent': 'BMSuperApp/2.0.57 (com.bxbe.arcfox; build:537; iOS 16.7.2) Alamofire/4.9.1',
-    'Connection': 'keep-alive'
-};
 
-// 获取动态参数和 Cookie 的请求
-const fetchParamsAndCookie = () => {
-    const paramsUrl = 'https://mg.arcfox.cn/mall-integral/public/integral/getUserIntegralParams'; // 假设存在此 URL 获取动态参数
-    $task.fetch({ url: paramsUrl, method: 'GET', headers: headers }).then(response => {
-        if (response.statusCode !== 200) {
-            console.log('获取动态参数失败');
-            $notify("Arcfox 签到", "获取动态参数失败", "请检查请求地址或网络连接");
-            $done();
-            return;
-        }
 
-        const data = JSON.parse(response.body);
-        const { appkey, nonce, sign, token } = data;
+if ($request && $request.headers) {
+    // 从请求URL中提取参数
+    const appkeyMatch = $request.url.match(/appkey=([^&]+)/);
+    const nonceMatch = $request.url.match(/nonce=([^&]+)/);
+    const signMatch = $request.url.match(/sign=([^&]+)/);
+    const tokenMatch = $request.url.match(/token=([^&]+)/);
 
-        // 保存动态参数和 Cookie
+    const appkey = appkeyMatch ? appkeyMatch[1] : null;
+    const nonce = nonceMatch ? nonceMatch[1] : null;
+    const sign = signMatch ? signMatch[1] : null;
+    const token = tokenMatch ? tokenMatch[1] : null;
+    const cookie = $request.headers['Cookie'] || $request.headers['cookie'];
+
+    if (appkey && nonce && sign && token && cookie) {
+        // 保存提取到的参数和Cookie
         $prefs.setValueForKey(appkey, 'arcfox_appkey');
         $prefs.setValueForKey(nonce, 'arcfox_nonce');
         $prefs.setValueForKey(sign, 'arcfox_sign');
         $prefs.setValueForKey(token, 'arcfox_token');
-        $prefs.setValueForKey(response.headers['Set-Cookie'], 'arcfox_cookie');
+        $prefs.setValueForKey(cookie, 'arcfox_cookie');
 
-        console.log('动态参数和 Cookie 保存成功');
-        $notify("Arcfox 签到", "动态参数和 Cookie 保存成功", "");
+        console.log('参数和 Cookie 保存成功');
+        $notify("Arcfox 签到", "参数和 Cookie 保存成功", "");
         $done();
-
-        // 执行签到
-        SignIn();
-    }, reason => {
-        console.log('获取动态参数失败: ' + reason.error);
-        $notify("Arcfox 签到", "获取动态参数失败", reason.error);
+    } else {
+        console.log('获取参数失败');
+        $notify("Arcfox 签到", "参数获取失败", "未能获取到必要的参数，请检查请求。");
         $done();
-    });
+    }
+    $done({});
+} else {
+    // 执行签到逻辑
+    SignIn();
 }
 
 function SignIn() {
@@ -78,15 +69,21 @@ function SignIn() {
         return;
     }
 
-    const requestHeaders = {
-        ...headers,
+    const headers = {
+        'Host': 'mg.arcfox.cn',
+        'Accept': '*/*',
+        'appversion': '2.0.57',
+        'Accept-Encoding': 'gzip;q=1.0, compress;q=0.5',
+        'Accept-Language': 'zh-Hans-CN;q=1.0, en-CN;q=0.9, zh-Hant-CN;q=0.8',
+        'User-Agent': 'BMSuperApp/2.0.57 (com.bxbe.arcfox; build:537; iOS 16.7.2) Alamofire/4.9.1',
+        'Connection': 'keep-alive',
         'Cookie': cookie
     };
 
     const myRequest = {
-        url: `${url}?appkey=${appkey}&nonce=${nonce}&sign=${sign}&signt=${Date.now()}&token=${token}`,
+        url: `https://mg.arcfox.cn/mall-integral/public/integral/getUserIntegral?appkey=${appkey}&nonce=${nonce}&sign=${sign}&signt=${Date.now()}&token=${token}`,
         method: 'GET',
-        headers: requestHeaders
+        headers: headers
     };
 
     $task.fetch(myRequest).then(response => {
@@ -109,7 +106,4 @@ function SignIn() {
         $done();
     });
 }
-
-// 执行脚本
-fetchParamsAndCookie();
 
