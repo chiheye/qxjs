@@ -112,6 +112,7 @@ if (typeof $response == "undefined") {
     'LongmaoApp':{ name: 'pro', id: 'douyina_forever_01'},
     'AnkiPro':{ name: 'Premium', id: 'com.ankipro.app.lifetime'},
     'AIChat':{ name: 'AI Plus', id: 'aiplus_yearly'},
+    'AIChat':{ name: 'AI Plus', id: 'aiplus_annual'},
     'SmartAIChat':{ name: 'Premium', id: 'sc_3999_1y'},
     'AIKeyboard':{ name: 'plus_keyboard', id: 'aiplus_keyboard_yearly'},
     'TextMask':{ name: 'pro', id: 'tm_lifetime'},
