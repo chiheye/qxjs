@@ -21,40 +21,77 @@ hostname= mg.arcfox.cn
 */
 
 
-// Define the key for storing cookies
-const COOKIE_KEY = "ARCFOX_COOKIE";
-const URL_KEY = "ARCFOX_URL";
 
+/*
+Quantumult X 脚本: Arcfox 自动签到
+
+描述: 每天自动签到获取积分。
+
+使用方法:
+1. 第一次运行脚本时会自动获取 `cookie`。
+2. 后续运行时将使用获取到的 `cookie` 进行签到。
+
+作者: ChatGPT
+*/
+
+const signInURL = `https://mg.arcfox.cn/mall-integral/public/integral/syncIntegral?appkey`;
 const method = `GET`;
-const body = ``;
+const headers = {
+  'Connection': `keep-alive`,
+  'Accept-Encoding': `gzip;q=1.0, compress;q=0.5`,
+  'appcode': `537`,
+  'vin': ``,
+  'appversion': `2.0.57`,
+  'User-Agent': `BMSuperApp/2.0.57 (com.bxbe.arcfox; build:537; iOS 16.7.2) Alamofire/4.9.1`,
+  'platform': `iOS`,
+  'ip': `1123213`,
+  'Cookie': $prefs.valueForKey('arcfox_cookie') || '', // 使用已保存的cookie
+  'Host': `mg.arcfox.cn`,
+  'Accept-Language': `zh-Hans-CN;q=1.0, en-CN;q=0.9, zh-Hant-CN;q=0.8`,
+  'Accept': `*/*`
+};
 
-let url = $request ? $request.url : $prefs.valueForKey(URL_KEY);
-let headers = $request ? $request.headers : JSON.parse($prefs.valueForKey(COOKIE_KEY));
+// 获取Cookie
+if (!$prefs.valueForKey('arcfox_cookie')) {
+  const request = {
+    url: signInURL,
+    method: method,
+    headers: headers
+  };
 
-if ($request) {
-    // Save the Cookie and URL
-    $prefs.setValueForKey(JSON.stringify($request.headers), COOKIE_KEY);
-    $prefs.setValueForKey($request.url, URL_KEY);
-    $notify("Arcfox", "Cookie捕获成功", "");
-    $done({});
+  $task.fetch(request).then(response => {
+    const setCookie = response.headers['Set-Cookie'];
+    if (setCookie) {
+      const cookie = setCookie.split(';')[0];
+      $prefs.setValueForKey(cookie, 'arcfox_cookie'); // 保存Cookie
+      console.log(`Cookie已保存: ${cookie}`);
+    } else {
+      console.log('无法获取Cookie');
+    }
+    $done();
+  }, reason => {
+    console.log(`获取Cookie失败: ${reason.error}`);
+    $done();
+  });
 } else {
-    // Send the request with the saved Cookie
-    const myRequest = {
-        url: url,
-        method: method,
-        headers: headers,
-        body: body
-    };
+  // 自动签到
+  const request = {
+    url: signInURL,
+    method: method,
+    headers: headers
+  };
 
-    $task.fetch(myRequest).then(response => {
-        if (response.statusCode == 200) {
-            $notify("Arcfox", "签到成功", "积分已同步");
-        } else {
-            $notify("Arcfox", "签到失败", response.statusCode + "\n\n" + response.body);
-        }
-        $done();
-    }, reason => {
-        $notify("Arcfox", "签到请求失败", reason.error);
-        $done();
-    });
+  $task.fetch(request).then(response => {
+    const result = JSON.parse(response.body);
+    if (result.status === "SUCCEED") {
+      console.log(`签到成功: ${result.data.checkToast}`);
+    } else {
+      console.log('签到失败');
+    }
+    $done();
+  }, reason => {
+    console.log(`签到请求失败: ${reason.error}`);
+    $done();
+  });
 }
+
