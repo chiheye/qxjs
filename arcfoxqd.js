@@ -67,6 +67,8 @@ function GetCookieAndHeaders() {
 
 function GetUserInfo() {
     const cookie = $prefs.valueForKey('arcfox_cookie');
+    const headers = JSON.parse($prefs.valueForKey('arcfox_headers'));
+
     if (!cookie) {
         console.log('获取用户信息失败：未找到有效的Cookie');
         $notify("极狐", "获取用户信息失败", "未找到有效的Cookie，请先获取Cookie。");
@@ -80,7 +82,8 @@ function GetUserInfo() {
         url: userInfoUrl,
         method: method,
         headers: {
-            'Cookie': cookie
+            'Cookie': cookie,
+            ...headers  // 添加之前保存的请求头参数
         },
         timeout: 10000 // 设置请求超时为10秒
     };
@@ -94,13 +97,16 @@ function GetUserInfo() {
             if (data && data.nickname) {
                 console.log('用户名称获取成功：' + data.nickname);
                 $notify("极狐", "用户名称获取成功", "昵称：" + data.nickname);
+                
             } else {
                 console.log('用户名称获取失败，响应数据中没有找到nickname字段');
                 $notify("极狐", "用户名称获取失败", "未能找到昵称信息，请检查响应数据。");
+               
             }
         } catch (error) {
             console.log('JSON 解析失败：' + error);
             $notify("极狐", "用户信息获取失败", "响应数据解析错误：" + error);
+            
         }
         $done();  // 结束脚本
     }, reason => {
