@@ -24,9 +24,17 @@ if ($request && $request.headers) {
 }
 
 function GetCookieAndHeaders() {
-    const urlParams = $request.url.split('?')[1]; // 获取URL中的参数部分
+    console.log('Request URL: ' + $request.url); // 输出请求的完整 URL
+
+    const urlParts = $request.url.split('?');
+    const urlParams = urlParts.length > 1 ? urlParts[1] : ''; // 确保安全提取 URL 参数
+    console.log('Extracted URL Parameters: ' + urlParams); // 输出提取的 URL 参数
+
     const headers = $request.headers;
+    console.log('Request Headers: ' + JSON.stringify(headers)); // 输出请求头部信息
+
     const cookie = headers['Cookie'] || headers['cookie'];
+    console.log('Extracted Cookie: ' + cookie); // 输出提取的 Cookie
 
     const necessaryHeaders = {
         'Connection': headers['Connection'],
