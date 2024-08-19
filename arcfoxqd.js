@@ -44,7 +44,8 @@ function GetCookieAndHeaders() {
         'Host': headers['Host'],
         'Accept-Language': headers['Accept-Language'],
         'Accept': headers['Accept'],
-        'aid': headers['aid']
+        'aid': headers['aid'],
+        'Cookie': headers['Cookie']
     };
 
     if (cookie) {
@@ -83,7 +84,7 @@ function GetUserInfo() {
         url: userInfoUrl,
         method: method,
         headers: {
-            'Cookie': cookie,
+            //'Cookie': cookie,
             ...headers  // 添加之前保存的请求头参数
         },
         timeout: 10000 // 设置请求超时为10秒
