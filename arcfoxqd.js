@@ -77,6 +77,7 @@ function GetUserInfo() {
     }
 
     console.log('开始获取用户信息，URL：' + userInfoUrl);
+    console.log('请求头参数：' + JSON.stringify(headers));
 
     const request = {
         url: userInfoUrl,
@@ -90,8 +91,9 @@ function GetUserInfo() {
 
     $task.fetch(request).then(response => {
         console.log('请求完成，状态码：' + response.statusCode);
+        console.log('原始响应内容：' + response.body);
+
         if (response.statusCode === 200) {
-            console.log('原始响应内容：' + response.body);
             try {
                 const data = JSON.parse(response.body);
                 console.log('解析后的数据：' + JSON.stringify(data));
