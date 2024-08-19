@@ -83,10 +83,8 @@ function GetUserInfo() {
     const request = {
         url: userInfoUrl,
         method: method,
-        headers: {
-            //'Cookie': cookie,
-            ...headers  // 添加之前保存的请求头参数
-        },
+        headers: headers,
+        body: body,
         timeout: 10000 // 设置请求超时为10秒
     };
 
