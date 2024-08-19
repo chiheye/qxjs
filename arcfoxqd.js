@@ -45,7 +45,7 @@ function GetCookieAndHeaders() {
         'Accept-Language': headers['Accept-Language'],
         'Accept': headers['Accept'],
         'aid': headers['aid'],
-        'Cookie': headers['Cookie']
+        'Cookie': cookie // 确保在请求头中包含 Cookie
     };
 
     if (cookie) {
@@ -77,27 +77,24 @@ function GetUserInfo() {
         return;
     }
 
-    //console.log('开始获取用户信息，URL：' + userInfoUrl);
-    //console.log('请求头参数：' + JSON.stringify(headers));
-
-    const GetUserbody = ``;
+    console.log('开始获取用户信息，URL：' + userInfoUrl);
+    console.log('请求头参数：' + JSON.stringify(headers));
 
     const request = {
         url: userInfoUrl,
         method: method,
         headers: headers,
-        GetUserbody: body,
         timeout: 10000 // 设置请求超时为10秒
     };
 
     $task.fetch(request).then(response => {
-        console.log('LOG'+'\n'+'请求完成，状态码：' + response.statusCode);
+        console.log('LOG' + '\n' + '请求完成，状态码：' + response.statusCode);
         console.log('原始响应内容：' + response.body);
 
         if (response.statusCode === 200) {
             // 检查响应的类型
             console.log('响应类型：' + typeof response.body);
-            
+
             // 如果 response.body 是 Buffer 对象或其他类型，请转换为字符串
             const responseBody = typeof response.body === 'string' ? response.body : String(response.body);
             console.log('转换后的响应内容：' + responseBody);
@@ -127,3 +124,4 @@ function GetUserInfo() {
         $done();  // 结束脚本
     });
 }
+
