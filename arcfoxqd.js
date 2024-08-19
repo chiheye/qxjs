@@ -97,7 +97,7 @@ function GetUserInfo() {
     }
 
     const request = {
-        url: userInfoUrl,
+        url: userInfoUrl+appkey+‘&’+nonce+‘&’+sign+‘&’+signt+‘&’+token,
         method: method,
         headers: headers,
         timeout: 10000 // 设置请求超时为10秒
