@@ -34,64 +34,23 @@ Quantumult X 脚本: Arcfox 自动签到
 作者: ChatGPT
 */
 
-const signInURL = `https://mg.arcfox.cn/mall-integral/public/integral/syncIntegral?appkey`;
-const method = `GET`;
-const headers = {
-  'Connection': `keep-alive`,
-  'Accept-Encoding': `gzip;q=1.0, compress;q=0.5`,
-  'appcode': `537`,
-  'vin': ``,
-  'appversion': `2.0.57`,
-  'User-Agent': `BMSuperApp/2.0.57 (com.bxbe.arcfox; build:537; iOS 16.7.2) Alamofire/4.9.1`,
-  'platform': `iOS`,
-  'ip': `1123213`,
-  'Cookie': $prefs.valueForKey('arcfox_cookie') || '', // 使用已保存的cookie
-  'Host': `mg.arcfox.cn`,
-  'Accept-Language': `zh-Hans-CN;q=1.0, en-CN;q=0.9, zh-Hant-CN;q=0.8`,
-  'Accept': `*/*`
-};
+// 这个脚本将捕获所有响应头并提取Set-Cookie
 
-// 获取Cookie
-if (!$prefs.valueForKey('arcfox_cookie')) {
-  const request = {
-    url: signInURL,
-    method: method,
-    headers: headers
-  };
+const url = $request.url;  // 获取请求的URL
+const method = $request.method;
+const headers = $response.headers || {};
 
-  $task.fetch(request).then(response => {
-    const setCookie = response.headers['Set-Cookie'];
-    if (setCookie) {
-      const cookie = setCookie.split(';')[0];
-      $prefs.setValueForKey(cookie, 'arcfox_cookie'); // 保存Cookie
-      console.log(`Cookie已保存: ${cookie}`);
-    } else {
-      console.log('无法获取Cookie');
-    }
-    $done();
-  }, reason => {
-    console.log(`获取Cookie失败: ${reason.error}`);
-    $done();
-  });
+// 检查响应头是否包含Set-Cookie
+const setCookie = headers['Set-Cookie'] || headers['set-cookie'];
+if (setCookie) {
+    console.log('URL:', url);
+    console.log('Set-Cookie:', setCookie);
+
+    // 发送通知（可选）
+    $notify('Cookie获取成功', `URL: ${url}`, `Set-Cookie: ${setCookie}`);
 } else {
-  // 自动签到
-  const request = {
-    url: signInURL,
-    method: method,
-    headers: headers
-  };
-
-  $task.fetch(request).then(response => {
-    const result = JSON.parse(response.body);
-    if (result.status === "SUCCEED") {
-      console.log(`签到成功: ${result.data.checkToast}`);
-    } else {
-      console.log('签到失败');
-    }
-    $done();
-  }, reason => {
-    console.log(`签到请求失败: ${reason.error}`);
-    $done();
-  });
+    console.log('没有找到Set-Cookie header');
 }
+
+$done({});  // 完成处理
 
