@@ -80,11 +80,13 @@ function GetUserInfo() {
     //console.log('开始获取用户信息，URL：' + userInfoUrl);
     //console.log('请求头参数：' + JSON.stringify(headers));
 
+    const GetUserbody = ``;
+
     const request = {
         url: userInfoUrl,
         method: method,
         headers: headers,
-        body: body,
+        GetUserbody: body,
         timeout: 10000 // 设置请求超时为10秒
     };
 
