@@ -1,4 +1,4 @@
-/*
+/************************************
 极狐签到脚本
 ************************
 QuantumultX 远程脚本配置:
@@ -8,7 +8,7 @@ QuantumultX 远程脚本配置:
 ^https:\/\/mg\.arcfox\.cn\/mall-integral\/public\/integral\/(syncIntegral|getUserIntegral).+ url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/main/arcfoxqd.js
 [mitm] 
 hostname= mg.arcfox.cn
-*/
+************************************/
 
 // 这个脚本将捕获所有响应头并提取Set-Cookie
 
