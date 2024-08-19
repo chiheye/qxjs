@@ -77,7 +77,7 @@ function GetUserInfo() {
     }
 
     console.log('开始获取用户信息，URL：' + userInfoUrl);
-    console.log('请求头参数：' + JSON.stringify(headers));
+    console.log('请求头参数：' + JSON.stringify(headers)+arcfox_cookie);
 
     const request = {
         url: userInfoUrl,
