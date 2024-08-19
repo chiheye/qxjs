@@ -90,23 +90,25 @@ function GetUserInfo() {
 
     $task.fetch(request).then(response => {
         console.log('请求完成，状态码：' + response.statusCode);
-        console.log('原始响应内容：' + response.body);
-        try {
-            const data = JSON.parse(response.body);
-            console.log('解析后的数据：' + JSON.stringify(data));
-            if (data && data.nickname) {
-                console.log('用户名称获取成功：' + data.nickname);
-                $notify("极狐", "用户名称获取成功", "昵称：" + data.nickname);
-                
-            } else {
-                console.log('用户名称获取失败，响应数据中没有找到nickname字段');
-                $notify("极狐", "用户名称获取失败", "未能找到昵称信息，请检查响应数据。");
-               
+        if (response.statusCode === 200) {
+            console.log('原始响应内容：' + response.body);
+            try {
+                const data = JSON.parse(response.body);
+                console.log('解析后的数据：' + JSON.stringify(data));
+                if (data && data.data && data.data.nickname) {
+                    console.log('用户名称获取成功：' + data.data.nickname);
+                    $notify("极狐", "用户名称获取成功", "昵称：" + data.data.nickname);
+                } else {
+                    console.log('用户名称获取失败，响应数据中没有找到nickname字段');
+                    $notify("极狐", "用户名称获取失败", "未能找到昵称信息，请检查响应数据。");
+                }
+            } catch (error) {
+                console.log('JSON 解析失败：' + error);
+                $notify("极狐", "用户信息获取失败", "响应数据解析错误：" + error);
             }
-        } catch (error) {
-            console.log('JSON 解析失败：' + error);
-            $notify("极狐", "用户信息获取失败", "响应数据解析错误：" + error);
-            
+        } else {
+            console.log('请求失败，状态码：' + response.statusCode);
+            $notify("极狐", "获取用户信息失败", "状态码：" + response.statusCode);
         }
         $done();  // 结束脚本
     }, reason => {
