@@ -84,7 +84,7 @@ function GetUserInfo() {
     };
 
     $task.fetch(request).then(response => {
-        console.log('Logs:' + '\n\n' + '请求完成，状态码：' + response.statusCode);
+        console.log('Logs:' + '\n\n' + '请求完成，状态码：' + response.statusCode  + '\n\n' + response.body);
 
         if (response.statusCode === 200) {
             try {
