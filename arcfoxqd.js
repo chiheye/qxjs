@@ -11,7 +11,6 @@ QuantumultX 远程脚本配置:
 hostname= mg.arcfox.cn
 ************************************/
 
-
 const userInfoUrl = 'https://mg.arcfox.cn/user/public/account/getUserInfo?';
 const method = 'GET';
 
@@ -27,7 +26,7 @@ if ($request && $request.headers) {
 function GetCookieAndHeaders() {
     const urlParams = $request.url.split('?')[1]; // 获取URL中的参数部分
     const headers = $request.headers;
-    //const cookie = headers['Cookie'] || headers['cookie'];
+    const cookie = headers['Cookie'] || headers['cookie'];
 
     const necessaryHeaders = {
         'Connection': headers['Connection'],
@@ -77,32 +76,20 @@ function GetUserInfo() {
         return;
     }
 
-    //console.log('开始获取用户信息，URL：' + userInfoUrl);
-    //console.log('请求头参数：' + JSON.stringify(headers));
-
-    const body = ``;
     const request = {
         url: userInfoUrl,
         method: method,
         headers: headers,
-        body: body,
         timeout: 10000 // 设置请求超时为10秒
     };
 
     $task.fetch(request).then(response => {
         console.log('Logs:' + '\n\n' + '请求完成，状态码：' + response.statusCode);
-        console.log('原始响应内容：' + response.body);
 
         if (response.statusCode === 200) {
-            // 检查响应的类型
-            console.log('响应类型：' + typeof response.body);
-
-            // 如果 response.body 是 Buffer 对象或其他类型，请转换为字符串
-            const responseBody = typeof response.body === 'string' ? response.body : String(response.body);
-            console.log('转换后的响应内容：' + responseBody);
-
             try {
-                const data = JSON.parse(responseBody);
+                // 尝试解析 JSON 响应内容
+                const data = JSON.parse(response.body);
                 console.log('解析后的数据：' + JSON.stringify(data));
                 if (data && data.data && data.data.nickname) {
                     console.log('用户名称获取成功：' + data.data.nickname);
@@ -112,8 +99,8 @@ function GetUserInfo() {
                     $notify("极狐", "用户名称获取失败", "未能找到昵称信息，请检查响应数据。");
                 }
             } catch (error) {
-                console.log('JSON 解析失败：' + error);
-                $notify("极狐", "用户信息获取失败", "响应数据解析错误：" + error);
+                console.log('JSON 解析失败：' + error.message);
+                $notify("极狐", "用户信息获取失败", "响应数据解析错误：" + error.message);
             }
         } else {
             console.log('请求失败，状态码：' + response.statusCode);
@@ -126,4 +113,3 @@ function GetUserInfo() {
         $done();  // 结束脚本
     });
 }
-
