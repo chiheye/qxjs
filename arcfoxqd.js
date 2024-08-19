@@ -84,9 +84,9 @@ function GetUserInfo() {
     };
 
     $task.fetch(request).then(response => {
-        console.log('Logs:' + '\n\n' + '请求完成，状态码：' + response.statusCode  + '\n\n' + '响应体：' + response.body);
+        console.log('Logs:' + '\n\n' + '请求完成，状态码：' + response.statusCode  + '\n\n' + '响应体：' + (response.body || '空响应体'));
 
-        if (response.statusCode === 200) {
+        if (response.statusCode === 200 && response.body) {
             try {
                 // 尝试解析 JSON 响应内容
                 const data = JSON.parse(response.body);
