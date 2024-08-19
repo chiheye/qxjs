@@ -12,62 +12,49 @@ hostname= mg.arcfox.cn
 ************************************/
 
 
-const userInfoUrl = 'https://mg.arcfox.cn/user/public/account/getUserInfo?';
-const method = 'GET';
-
 if ($request && $request.headers) {
-    // 自动获取并保存Cookie
-    GetCookie();
+    // 自动获取并保存Cookie和请求参数
+    GetCookieAndHeaders();
     $done({});
-} else {
-    // 获取用户信息
-    GetUserInfo();
 }
 
-function GetCookie() {
-    const cookie = $request.headers['Cookie'] || $request.headers['cookie'];
+function GetCookieAndHeaders() {
+    const urlParams = $request.url.split('?')[1]; // 获取URL中的参数部分
+    const headers = $request.headers;
+    const cookie = headers['Cookie'] || headers['cookie'];
+
+    const necessaryHeaders = {
+        'Connection': headers['Connection'],
+        'Accept-Encoding': headers['Accept-Encoding'],
+        'appcode': headers['appcode'],
+        'mobile': headers['mobile'],
+        'vin': headers['vin'],
+        'appversion': headers['appversion'],
+        'deviceId': headers['deviceId'],
+        'User-Agent': headers['User-Agent'],
+        'platform': headers['platform'],
+        'ip': headers['ip'],
+        'deviceModel': headers['deviceModel'],
+        'Host': headers['Host'],
+        'Accept-Language': headers['Accept-Language'],
+        'Accept': headers['Accept'],
+        'aid': headers['aid']
+    };
+
     if (cookie) {
         $prefs.setValueForKey(cookie, 'arcfox_cookie');
         console.log('Cookie保存成功：' + cookie);
-        $notify("极狐", "Cookie保存成功", "");
+        $notify("极狐", "Cookie保存成功", ""); 
     } else {
         console.log('获取Cookie失败');
         $notify("极狐", "Cookie获取失败", "未能获取到Cookie，请检查设置。");
     }
-}
 
-function GetUserInfo() {
-    const cookie = $prefs.valueForKey('arcfox_cookie');
-    if (!cookie) {
-        console.log('获取用户信息失败：未找到有效的Cookie');
-        $notify("极狐", "获取用户信息失败", "未找到有效的Cookie，请先获取Cookie。");
-        return;
-    }
+    $prefs.setValueForKey(JSON.stringify(necessaryHeaders), 'arcfox_headers');
+    console.log('请求头参数保存成功：' + JSON.stringify(necessaryHeaders));
+    $prefs.setValueForKey(urlParams, 'arcfox_url_params');
+    console.log('URL参数保存成功：' + urlParams);
 
-    console.log('开始获取用户信息，URL：' + userInfoUrl);
-
-    const request = {
-        url: userInfoUrl,
-        method: method,
-        headers: {
-            'Cookie': cookie
-        },
-        timeout: 10000 // 设置请求超时为10秒
-    };
-
-    $task.fetch(request).then(response => {
-        console.log('请求完成，状态码：' + response.statusCode);
-        const data = JSON.parse(response.body);
-        console.log('响应数据：' + JSON.stringify(data));
-        if (data && data.nickname) {
-            console.log('用户名称获取成功：' + data.nickname);
-            $notify("极狐", "用户名称获取成功", "昵称：" + data.nickname);
-        } else {
-            console.log('用户名称获取失败，响应：' + response.body);
-            $notify("极狐", "用户名称获取失败", "未能找到昵称信息，请检查响应数据。");
-        }
-    }, reason => {
-        console.log('获取用户信息请求失败：' + reason.error);
-        $notify("极狐", "获取用户信息失败", "网络或服务器错误：" + reason.error);
-    });
+    $notify("极狐", "请求头和参数保存成功", "");
+    $done();  // 结束脚本
 }
