@@ -27,7 +27,7 @@ if ($request && $request.headers) {
 function GetCookieAndHeaders() {
     const urlParams = $request.url.split('?')[1]; // 获取URL中的参数部分
     const headers = $request.headers;
-    const cookie = headers['Cookie'] || headers['cookie'];
+    //const cookie = headers['Cookie'] || headers['cookie'];
 
     const necessaryHeaders = {
         'Connection': headers['Connection'],
