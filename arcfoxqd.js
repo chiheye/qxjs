@@ -24,17 +24,22 @@ if ($request && $request.headers) {
 }
 
 function GetCookieAndHeaders() {
-    console.log('Request URL: ' + $request.url); // 输出请求的完整 URL
+    const urlParts = $request.url.split('?'); // 获取URL的两部分：基础部分和参数部分
+    const urlParams = urlParts[1] || ''; // 参数部分
+    const queryParams = new URLSearchParams(urlParams); // 使用 URLSearchParams 解析参数
 
-    const urlParts = $request.url.split('?');
-    const urlParams = urlParts.length > 1 ? urlParts[1] : ''; // 确保安全提取 URL 参数
-    console.log('Extracted URL Parameters: ' + urlParams); // 输出提取的 URL 参数
+    // 提取各个参数
+    const appkey = queryParams.get('appkey');
+    const nonce = queryParams.get('nonce');
+    const sign = queryParams.get('sign');
+    const signt = queryParams.get('signt');
+    const token = queryParams.get('token');
+
+    // 输出参数到控制台（可以删除）
+    console.log('URL参数：', { appkey, nonce, sign, signt, token });
 
     const headers = $request.headers;
-    console.log('Request Headers: ' + JSON.stringify(headers)); // 输出请求头部信息
-
     const cookie = headers['Cookie'] || headers['cookie'];
-    console.log('Extracted Cookie: ' + cookie); // 输出提取的 Cookie
 
     const necessaryHeaders = {
         'Connection': headers['Connection'],
@@ -66,8 +71,15 @@ function GetCookieAndHeaders() {
 
     $prefs.setValueForKey(JSON.stringify(necessaryHeaders), 'arcfox_headers');
     console.log('请求头参数保存成功：' + JSON.stringify(necessaryHeaders));
-    $prefs.setValueForKey(urlParams, 'arcfox_url_params');
-    console.log('URL参数保存成功：' + urlParams);
+
+    // 保存各个参数
+    $prefs.setValueForKey(appkey, 'arcfox_appkey');
+    $prefs.setValueForKey(nonce, 'arcfox_nonce');
+    $prefs.setValueForKey(sign, 'arcfox_sign');
+    $prefs.setValueForKey(signt, 'arcfox_signt');
+    $prefs.setValueForKey(token, 'arcfox_token');
+    
+    console.log('URL参数保存成功：' + JSON.stringify({ appkey, nonce, sign, signt, token }));
 
     $notify("极狐", "请求头和参数保存成功", "");
     $done();  // 结束脚本
