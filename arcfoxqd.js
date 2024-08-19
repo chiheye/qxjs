@@ -44,16 +44,21 @@ function GetUserInfo() {
         return;
     }
 
+    console.log('开始获取用户信息，URL：' + userInfoUrl);
+
     const request = {
         url: userInfoUrl,
         method: method,
         headers: {
             'Cookie': cookie
-        }
+        },
+        timeout: 10000 // 设置请求超时为10秒
     };
 
     $task.fetch(request).then(response => {
+        console.log('请求完成，状态码：' + response.statusCode);
         const data = JSON.parse(response.body);
+        console.log('响应数据：' + JSON.stringify(data));
         if (data && data.nickname) {
             console.log('用户名称获取成功：' + data.nickname);
             $notify("极狐", "用户名称获取成功", "昵称：" + data.nickname);
