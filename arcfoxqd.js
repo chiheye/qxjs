@@ -79,8 +79,15 @@ function getCookieAndHeaders() {
 function getUserInfo() {
     const headers = JSON.parse($prefs.valueForKey('arcfox_headers'));
 
-    const requestUrl = `${userInfoUrl}&appkey=${$prefs.valueForKey('arcfox_appkey')}&nonce=${$prefs.valueForKey('arcfox_nonce')}&sign=${$prefs.valueForKey('arcfox_sign')}&signt=${$prefs.valueForKey('arcfox_signt')}&token=${$prefs.valueForKey('arcfox_token')}`;
-    $notify(requestUrl)
+    const appkey = $prefs.valueForKey('arcfox_appkey');
+    const nonce = $prefs.valueForKey('arcfox_nonce');
+    const sign = $prefs.valueForKey('arcfox_sign');
+    const signt = $prefs.valueForKey('arcfox_signt');
+    const token = $prefs.valueForKey('arcfox_token');
+
+    const requestUrl = `${userInfoUrl}&appkey=${appkey}&nonce=${nonce}&sign=${sign}&signt=${signt}&token=${token}`;
+
+    console.log('即将发送的请求 URL：' + requestUrl);
 
     const request = {
         url: requestUrl,
@@ -120,3 +127,4 @@ function getUserInfo() {
         $done();  // 结束脚本
     });
 }
+
