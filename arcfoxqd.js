@@ -80,6 +80,7 @@ function getUserInfo() {
     const headers = JSON.parse($prefs.valueForKey('arcfox_headers'));
 
     const requestUrl = `${userInfoUrl}&appkey=${$prefs.valueForKey('arcfox_appkey')}&nonce=${$prefs.valueForKey('arcfox_nonce')}&sign=${$prefs.valueForKey('arcfox_sign')}&signt=${$prefs.valueForKey('arcfox_signt')}&token=${$prefs.valueForKey('arcfox_token')}`;
+    $notify(requestUrl)
 
     const request = {
         url: requestUrl,
