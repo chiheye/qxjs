@@ -98,7 +98,8 @@ function getUserInfo() {
     };
 
     $task.fetch(request).then(response => {
-        console.log('请求体：' + necessaryHeaders);
+        // 正确打印出 necessaryHeaders 的内容
+        console.log('请求体：' + JSON.stringify(necessaryHeaders));
         console.log('请求完成，状态码：' + response.statusCode);
         console.log('响应体：' + (response.body || '空响应体'));
 
