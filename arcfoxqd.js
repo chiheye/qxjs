@@ -71,7 +71,8 @@ function getCookieAndHeaders() {
     
     console.log('URL参数保存成功：' + JSON.stringify({ appkey, nonce, sign, signt, token }));
 
-    $notify("极狐", "请求头和参数保存成功", "");
+    $notify("极狐", "请求头和参数保存成功", JSON.stringify({ appkey, nonce, sign, signt, token }));
+
     $done();  // 结束脚本
 }
 
