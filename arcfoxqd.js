@@ -5,25 +5,24 @@ QuantumultX 远程脚本配置:
 ************************  
 [rewrite_local]
 # 获取arcfoxCookie
-//^https:\/\/mg\.arcfox\.cn\/arcfox-brand\/public\/buriedPoint? url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/main/arcfoxqd.js
-^https:\/\/mg\.arcfox\.cn\/update-center\/checkVersion? url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/main/arcfoxqd.js
+^https:\/\/mg\.arcfox\.cn(/[\w-]+/public/[\w-]+\?) url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/main/arcfoxqd.js
 [mitm] 
 hostname= mg.arcfox.cn
 ************************************/
 
-const userInfoUrl = 'https://mg.arcfox.cn/user/public/account/getUserInfo?';
+const userInfoUrl = '^https:\/\/mg\.arcfox\.cn(/[\w-]+/public/[\w-]+\?)';
 const method = 'GET';
 
 if ($request && $request.headers) {
     // 自动获取并保存Cookie和请求参数
-    GetCookieAndHeaders();
+    getCookieAndHeaders();
     $done({});
 } else {
     // 获取用户信息
-    GetUserInfo();
+    getUserInfo();
 }
 
-function GetCookieAndHeaders() {
+function getCookieAndHeaders() {
     const urlParts = $request.url.split('?'); // 获取URL的两部分：基础部分和参数部分
     const urlParams = urlParts[1] || ''; // 参数部分
     const queryParams = new URLSearchParams(urlParams); // 使用 URLSearchParams 解析参数
@@ -39,7 +38,6 @@ function GetCookieAndHeaders() {
     console.log('URL参数：', { appkey, nonce, sign, signt, token });
 
     const headers = $request.headers;
-    const cookie = headers['Cookie'] || headers['cookie'];
 
     const necessaryHeaders = {
         'Connection': headers['Connection'],
@@ -57,18 +55,10 @@ function GetCookieAndHeaders() {
         'Accept-Language': headers['Accept-Language'],
         'Accept': headers['Accept'],
         'aid': headers['aid'],
-        'Cookie': cookie // 确保在请求头中包含 Cookie
+        'Cookie': headers['Cookie']
     };
 
-    if (cookie) {
-        $prefs.setValueForKey(cookie, 'arcfox_cookie');
-        console.log('Cookie保存成功：' + cookie);
-        $notify("极狐", "Cookie保存成功", ""); 
-    } else {
-        console.log('获取Cookie失败');
-        $notify("极狐", "Cookie获取失败", "未能获取到Cookie，请检查设置。");
-    }
-
+    // 保存请求头
     $prefs.setValueForKey(JSON.stringify(necessaryHeaders), 'arcfox_headers');
     console.log('请求头参数保存成功：' + JSON.stringify(necessaryHeaders));
 
@@ -85,32 +75,27 @@ function GetCookieAndHeaders() {
     $done();  // 结束脚本
 }
 
-function GetUserInfo() {
-    const cookie = $prefs.valueForKey('arcfox_cookie');
+function getUserInfo() {
     const headers = JSON.parse($prefs.valueForKey('arcfox_headers'));
 
-    if (!cookie) {
-        console.log('获取用户信息失败：未找到有效的Cookie');
-        $notify("极狐", "获取用户信息失败", "未找到有效的Cookie，请先获取Cookie。");
-        $done();  // 结束脚本
-        return;
-    }
+    const requestUrl = `${userInfoUrl}&appkey=${$prefs.valueForKey('arcfox_appkey')}&nonce=${$prefs.valueForKey('arcfox_nonce')}&sign=${$prefs.valueForKey('arcfox_sign')}&signt=${$prefs.valueForKey('arcfox_signt')}&token=${$prefs.valueForKey('arcfox_token')}`;
 
     const request = {
-        url: userInfoUrl+appkey+‘&’+nonce+‘&’+sign+‘&’+signt+‘&’+token,
+        url: requestUrl,
         method: method,
         headers: headers,
         timeout: 10000 // 设置请求超时为10秒
     };
 
     $task.fetch(request).then(response => {
-        console.log('Logs:' + '\n\n' + '请求完成，状态码：' + response.statusCode  + '\n\n' + '响应体：' + (response.body || '空响应体'));
+        console.log('请求完成，状态码：' + response.statusCode);
+        console.log('响应体：' + (response.body || '空响应体'));
 
         if (response.statusCode === 200 && response.body) {
             try {
-                // 尝试解析 JSON 响应内容
                 const data = JSON.parse(response.body);
                 console.log('解析后的数据：' + JSON.stringify(data));
+
                 if (data && data.data && data.data.nickname) {
                     console.log('用户名称获取成功：' + data.data.nickname);
                     $notify("极狐", "用户名称获取成功", "昵称：" + data.data.nickname);
