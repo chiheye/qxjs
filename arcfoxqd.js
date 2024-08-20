@@ -10,7 +10,7 @@ QuantumultX 远程脚本配置:
 hostname= mg.arcfox.cn
 ************************************/
 
-const userInfoUrl = '^https:\/\/mg\.arcfox\.cn(/[\w-]+/public/[\w-]+\?)';
+const userInfoUrl = 'https://mg.arcfox.cn/user/public/account/getUserInfo?';
 const method = 'GET';
 
 if ($request && $request.headers) {
