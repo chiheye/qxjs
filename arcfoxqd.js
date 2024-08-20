@@ -77,7 +77,8 @@ function getCookieAndHeaders() {
 }
 
 function getUserInfo() {
-    const headers = JSON.parse($prefs.valueForKey('arcfox_headers'));
+    // 从存储中读取必要的请求头
+    const necessaryHeaders = JSON.parse($prefs.valueForKey('arcfox_headers'));
 
     const appkey = $prefs.valueForKey('arcfox_appkey');
     const nonce = $prefs.valueForKey('arcfox_nonce');
@@ -92,7 +93,7 @@ function getUserInfo() {
     const request = {
         url: requestUrl,
         method: method,
-        headers: headers,
+        headers: necessaryHeaders, // 使用正确的 headers
         timeout: 10000 // 设置请求超时为10秒
     };
 
