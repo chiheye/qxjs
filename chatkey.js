@@ -4,7 +4,7 @@ https://api-v4-generatechatstream-7hb5gcrmka-uc.a.run.app url script-request-hea
 [mitm] 
 hostname = api-v4-generatechatstream-7hb5gcrmka-uc.a.run.app
 ********************************/
-const url = 'https://api-v4-generatechatstream-7hb5gcrmka-uc.a.run.app';
+const url = 'https://api-v4-generatechatstream-7hb5gcrmka-uc.a.run.app/';
 
 if ($request && $request.url.match(url)) {
     const authorizationHeader = $request.headers['authorization'];
