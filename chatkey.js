@@ -1,5 +1,16 @@
-
-const url = 'https://cnzzgpt.ddnsfree.com';
+/******************************
+脚本功能：
+脚本作者：afengye
+脚本频道：https://t.me/afengye
+更新时间：2024-07-26
+使用声明：️仅供学习交流, 🈲️商业用途
+*******************************
+[rewrite_local]
+^https:\/\/api-v4-generatechatstream-7hb5gcrmka-uc\.a\.run.\app url script-request-header https://raw.githubusercontent.com/afengye/QX/main/wxdt.js
+[mitm] 
+hostname = api-v4-generatechatstream-7hb5gcrmka-uc.a.run.app
+********************************/
+const url = 'https://api-v4-generatechatstream-7hb5gcrmka-uc.a.run.app';
 
 if ($request && $request.url.match(url)) {
     const authorizationHeader = $request.headers['authorization'];
