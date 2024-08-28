@@ -6,7 +6,7 @@
 使用声明：️仅供学习交流, 🈲️商业用途
 *******************************
 [rewrite_local]
-^https:\/\/api-v4-generatechatstream-7hb5gcrmka-uc\.a\.run.\app url script-request-header https://raw.githubusercontent.com/afengye/QX/main/wxdt.js
+^https:\/\/api-v4-generatechatstream-7hb5gcrmka-uc\.a\.run.\app url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/main/chatkey.js
 [mitm] 
 hostname = api-v4-generatechatstream-7hb5gcrmka-uc.a.run.app
 ********************************/
