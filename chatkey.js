@@ -1,7 +1,7 @@
 
 /**
 [rewrite_local]
-https://ceshimini.dns.army url script-request-header ⁨https://raw.githubusercontent.com/chiheye/qxjs/main/chatkey.js
+https://cnzzgpt.ddnsfree.com url script-request-header ⁨https://raw.githubusercontent.com/chiheye/qxjs/main/chatkey.js
 [mitm]  
 https:\\ceshimini.dns.army
  **/
