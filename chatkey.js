@@ -1,7 +1,7 @@
 
 /**
 [rewrite_local]
-https:\\ url script-request-header ⁨https://raw.githubusercontent.com/chiheye/qxjs/main/chatkey.js
+https://api-v4-generatechatstream-7hb5gcrmka-uc.a.run.app url script-request-header ⁨https://raw.githubusercontent.com/chiheye/qxjs/main/chatkey.js
 [mitm]  
 https:\\api-v4-generatechatstream-7hb5gcrmka-uc.a.run.app
  **/
