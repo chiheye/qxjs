@@ -1,12 +1,5 @@
 
-/**
-[rewrite_local]
-https://cnzzgpt.ddnsfree.com url script-request-header ⁨https://raw.githubusercontent.com/chiheye/qxjs/main/chatkey.js
-[mitm]  
-https:\\ceshimini.dns.army
- **/
- 
-const url = 'https://ceshimini.dns.army';
+const url = 'https://cnzzgpt.ddnsfree.com';
 
 if ($request && $request.url.match(url)) {
     const authorizationHeader = $request.headers['authorization'];
