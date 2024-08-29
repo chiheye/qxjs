@@ -9,6 +9,7 @@ const targetURL = 'https://api-v4-generatechatstream-7hb5gcrmka-uc.a.run.app/';
 
 if ($request && $request.url.includes(targetURL)) {
     const authorizationHeader = $request.headers['authorization'] || $request.headers['Authorization'];
+    console.log('Token saved response: ' + authorizationHeader);
     
     if (authorizationHeader) {
         const bearerToken = authorizationHeader.split(' ')[1];
