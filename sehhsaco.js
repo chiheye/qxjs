@@ -1,10 +1,10 @@
 /*
-2024.7.26 18.15
+2025.4.10 23.15
 18k漫画 
 https://sehhsaco.top
 
 [rewrite_local]
-https:\/\/sehhsaco\.top\/api\/(chaptersDetails|memberDetails|videoDetails) url script-response-body https://gist.githubusercontent.com/Yu9191/919552f4d3358c070e5d995137514748/raw/18kmanhua.js
+https:\/\/sehhsaco\.top\/api\/(chaptersDetails|memberDetails|videoDetails) url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/sehhsaco.js
 [mitm]
 hostname = sehhsaco.top
 */
