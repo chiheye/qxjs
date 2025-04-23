@@ -1,12 +1,11 @@
 /*
 2025.4.10 23.15
-18k漫画 
-https://sehhsaco.top
+https://boyseman.top
 
 [rewrite_local]
-https:\/\/sehhsaco\.top\/api\/(chaptersDetails|memberDetails|videoDetails) url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/sehhsaco.js
+https:\/\/boyseman\.top\/api\/(chaptersDetails|memberDetails|videoDetails) url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/sehhsaco.js
 [mitm]
-hostname = sehhsaco.top
+hostname = boyseman.top
 */
 
 
