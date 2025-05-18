@@ -1,3 +1,6 @@
+ ﻿[rewrite_local]﻿ 
+^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_rewrite.js
+
 // GoodNotes 请求重写脚本
 var modifiedUrl = "https://goodenotes6.lovebabyforever.workers.dev/";
 var headers = $request.headers;
