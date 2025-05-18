@@ -10,14 +10,15 @@ hostname = %APPEND% isi.csan.goodnotes.com.*, isi.csan.goodnotes.com
 
 
 */
-// GoodNotes 请求重写脚本
-var modifiedUrl = "https://goodenotes6.lovebabyforever.workers.dev/";
-var headers = $request.headers;
-headers.Host = "goodenotes6.lovebabyforever.workers.dev";
 
-var newRequest = {
-    url: modifiedUrl,
-    headers: headers
-};
 
-$done(newRequest);
+
+// goodnotes_host_rewrite.js
+let url = $request.url.replace(
+    /^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/([a-f0-9\-]{36})$/,
+    "https://goodenotes6.lovebabyforever.workers.dev/v1/subscribers/$1"
+);
+let headers = Object.assign({}, $request.headers, {
+    Host: "goodenotes6.lovebabyforever.workers.dev"
+});
+$done({ url, headers });
