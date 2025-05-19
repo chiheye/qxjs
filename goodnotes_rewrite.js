@@ -13,14 +13,12 @@ const url = $request.url;
 const headers = $request.headers;
 const targetHost = 'goodenotes6.lovebabyforever.workers.dev';
 
-// 提取订阅者ID
-const subscriberId = url.match(/\/subscribers\/([a-f0-9\-]{36})$/)[1];
 
 // 构建新URL，确保包含订阅者ID
 const newUrl = url.replace(
         /^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/,
         'https://' + targetHost
-    );;
+    );
 
 // 修改Host头
 headers['Host'] = targetHost;
