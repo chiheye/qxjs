@@ -1,6 +1,6 @@
 /*
-#Goodnotes 订阅请求重写脚本
-#最后更新：2025.5.19 23:15
+Goodnotes 订阅请求重写脚本
+最后更新：2025.5.19 23:15
 
 [rewrite_local]
 ^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_rewrite.js
@@ -16,7 +16,7 @@ const targetHost = 'goodenotes6.lovebabyforever.workers.dev';
 // 检查是否匹配目标 URL
 if (/^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/.test(url)) {
     // 重写 URL，保留路径和参数
-    const newUrl = url.replace(/^https:\/\/isi\.csan\.goodnotes[^\/]*/, 'https://goodenotes6.lovebabyforever.workers.dev');
+    const newUrl = url.replace(/^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/, 'https://goodenotes6.lovebabyforever.workers.dev');
     
     // 重写 Host 头部
     headers['Host'] = targetHost;
