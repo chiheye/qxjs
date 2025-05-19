@@ -6,7 +6,7 @@ Goodnotes 订阅请求重写脚本
 ^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_rewrite.js
 
 [MITM]
-hostname = isi.csan.goodnotes.com
+hostname = %APPEND% isi.csan.goodnotes.com.*, isi.csan.goodnotes.com
 */
 
 const url = $request.url;
@@ -22,7 +22,7 @@ if (/^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/.test(u
     headers['Host'] = targetHost;
     
     // 调试信息
-    // $notify('Goodnotes Rewrite', 'URL Matched', `Original: ${url}\nNew: ${newUrl}\nHost: ${targetHost}`);
+    $notify('Goodnotes Rewrite', 'URL Matched', `Original: ${url}\nNew: ${newUrl}\nHost: ${targetHost}`);
     
     // 返回修改后的请求
     $done({ url: newUrl, headers });
