@@ -20,6 +20,7 @@ if (/^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/.test(u
     
     // 重写 Host 头部
     headers['Host'] = targetHost;
+    headers['host'] = targetHost;
     
     // 调试信息
     $notify('Goodnotes Rewrite', 'URL Matched', `Original: ${url}\nNew: ${newUrl}\nHost: ${targetHost}`);
