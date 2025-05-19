@@ -1,6 +1,6 @@
 /*
-Goodnotes 订阅请求重写脚本
-最后更新：2025.5.19 23:15
+#Goodnotes 订阅请求重写脚本
+#最后更新：2025.5.19 23:15
 
 [rewrite_local]
 ^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_rewrite.js
