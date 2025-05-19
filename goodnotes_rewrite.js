@@ -11,7 +11,6 @@ hostname = isi.csan.goodnotes.com
 
 
 
-// goodnotes_rewrite.js
 const url = $request.url;
 const headers = $request.headers;
 const targetHost = 'goodenotes6.lovebabyforever.workers.dev';
@@ -30,6 +29,7 @@ if (/^https:\/\/isi\.csan\.goodnotes\.com\/v1\/subscribers\/[a-f0-9\-]{36}$/.tes
     // 返回修改后的请求
     $done({ url: newUrl, headers });
 } else {
-    // 不匹配，直接返回原请求
+    // 不匹配，记录未匹配的 URL 以便调试
+    $notify('Goodnotes Rewrite', 'URL Not Matched', `URL: ${url}`);
     $done({});
 }
