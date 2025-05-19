@@ -16,7 +16,7 @@ const targetHost = 'goodenotes6.lovebabyforever.workers.dev';
 // 检查是否匹配目标 URL
 if (/^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/.test(url)) {
     // 重写 URL，保留路径和参数
-    const newUrl = url.replace(/^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/, 'https://goodenotes6.lovebabyforever.workers.dev');
+    const newUrl = url.replace(/^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/, 'https://goodenotes6.lovebabyforever.workers.dev/');
     
     // 重写 Host 头部
     headers['Host'] = targetHost;
