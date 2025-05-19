@@ -15,7 +15,7 @@ const targetHost = 'goodenotes6.lovebabyforever.workers.dev';
 
 
 // 构建新URL
-const newUrl = `https://${targetHost}`;
+const url = `https://${targetHost}`;
 
 // 修改Host头
 headers['Host'] = targetHost;
