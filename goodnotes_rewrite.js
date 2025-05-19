@@ -6,7 +6,7 @@ Goodnotes 订阅请求重写脚本
 ^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_rewrite.js
 
 [MITM]
-hostname = isi.csan.goodnotes.com, isi.csan.goodnotes.com.*
+hostname = isi.csan.goodnotes.com
 */
 
 const url = $request.url;
@@ -19,8 +19,8 @@ if (/^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/.test(u
     const newUrl = url.replace(/^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/, 'https://goodenotes6.lovebabyforever.workers.dev/');
     
     // 重写 Host 头部
-    headers['Host'] = targetHost;
     headers['host'] = targetHost;
+    headers['Host'] = targetHost;
     
     // 调试信息
     $notify('Goodnotes Rewrite', 'URL Matched', `Original: ${url}\nNew: ${newUrl}\nHost: ${targetHost}`);
