@@ -3,8 +3,7 @@
 
 
 
-[rewrite_local]﻿ 
-
+[rewrite_local]﻿
 ^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_rewrite.js
 ^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ script-request-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_rewrite.js
 
