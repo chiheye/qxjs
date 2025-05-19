@@ -19,8 +19,8 @@ if (/^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/.test(u
     const newUrl = url.replace(/^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/, 'https://goodenotes6.lovebabyforever.workers.dev/');
     
     // 重写 Host 头部
-    headers['host'] = targetHost;
-    headers['Host'] = targetHost;
+    headers['host'] = 'goodenotes6.lovebabyforever.workers.dev';
+    headers['Host'] = 'goodenotes6.lovebabyforever.workers.dev';
     
     // 调试信息
     $notify('Goodnotes Rewrite', 'URL Matched', `Original: ${url}\nNew: ${newUrl}\nHost: ${targetHost}`);
