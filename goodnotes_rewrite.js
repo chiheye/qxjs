@@ -1,16 +1,12 @@
 /*
-2025.5.19 23.15
+Goodnotes 订阅请求重写脚本
+最后更新：2025.5.19 23:15
 
-
-
-[rewrite_local]﻿
-^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_rewrite.js
-^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ script-request-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_rewrite.js
+[rewrite_local]
+^https:\/\/isi\.csan\.goodnotes\.com\/v1\/subscribers\/[a-f0-9\-]{36}$ script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_rewrite.js
 
 [MITM]
-hostname = %APPEND% isi.csan.goodnotes.com.*, isi.csan.goodnotes.com
-
-
+hostname = isi.csan.goodnotes.com
 */
 
 
@@ -19,21 +15,20 @@ hostname = %APPEND% isi.csan.goodnotes.com.*, isi.csan.goodnotes.com
 const url = $request.url;
 const headers = $request.headers;
 const targetHost = 'goodenotes6.lovebabyforever.workers.dev';
-const targetUrl = 'https://goodenotes6.lovebabyforever.workers.dev/';
 
 // 检查是否匹配目标 URL
-if (/^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/.test(url)) {
-    // 重写 URL
-    let newUrl = targetUrl;
+if (/^https:\/\/isi\.csan\.goodnotes\.com\/v1\/subscribers\/[a-f0-9\-]{36}$/.test(url)) {
+    // 重写 URL，保留路径和参数
+    const newUrl = url.replace(/^https:\/\/isi\.csan\.goodnotes\.com/, 'https://goodenotes6.lovebabyforever.workers.dev');
     
     // 重写 Host 头部
     headers['Host'] = targetHost;
     
+    // 调试信息
+    $notify('Goodnotes Rewrite', 'URL Matched', `Original: ${url}\nNew: ${newUrl}`);
+    
     // 返回修改后的请求
-    $done({
-        url: newUrl,
-        headers: headers
-    });
+    $done({ url: newUrl, headers });
 } else {
     // 不匹配，直接返回原请求
     $done({});
