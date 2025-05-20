@@ -3,23 +3,21 @@ Goodnotes 订阅请求重写脚本
 最后更新：2025.5.19 23:15
 
 [rewrite_local]
-^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$\/* url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_rewrite.js
+^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_rewrite.js
 
 [MITM]
-hostname = %APPEND% isi.csan.goodnotes.com.*, isi.csan.goodnotes.com
+hostname = %APPEND% isi.csan.goodnotes.com
 */
 
-const url = $request.url;
-const headers = $request.headers;
+const originalUrl = $request.url;
+const originalHeaders = $request.headers;
 const targetHost = 'goodenotes6.lovebabyforever.workers.dev';
 
+// 构建新 URL
+const url = originalUrl.replace(/^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/, `https://${targetHost}`);
 
-// 构建新URL
-const url = `https://${targetHost}`;
-
-// 修改Host头
-headers['Host'] = targetHost;
-
+// 修改 Host 头
+originalHeaders['Host'] = targetHost;
 
 // 返回修改后的请求
-$done({ url: url, headers });
+$done({ url, headers: originalHeaders });
