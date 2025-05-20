@@ -4,7 +4,7 @@ Goodnotes 订阅请求重写脚本
 
 [rewrite_local]
 ^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ url 302 https://goodenotes6.lovebabyforever.workers.dev
-^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_rewrite.js
+^https:\/\/goodenotes6\.lovebabyforever\.workers\.dev\/ url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_headers.js
 
 [MITM]
 hostname = %APPEND% isi.csan.goodnotes.com
