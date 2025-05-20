@@ -21,10 +21,7 @@ const url = `https://${targetHost}`;
 headers['Host'] = targetHost;
 
 // 仅在调试模式下显示通知
-const debug = true;
-if (debug) {
-  $notify('Goodnotes Rewrite', 'Success', `Original: ${url}\nNew: ${newUrl}`);
-}
+$notify('Goodnotes Rewrite', 'Success', `Original: ${url}\nNew: ${newUrl}`);
 
 // 返回修改后的请求
 $done({ url: newUrl, headers });
