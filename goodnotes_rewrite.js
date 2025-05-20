@@ -20,8 +20,6 @@ const url = `https://${targetHost}`;
 // 修改Host头
 headers['Host'] = targetHost;
 
-// 仅在调试模式下显示通知
-$notify('Goodnotes Rewrite', 'Success', `Original: ${url}\nNew: ${newUrl}`);
 
 // 返回修改后的请求
-$done({ url: newUrl, headers });
+$done({ url: url, headers });
