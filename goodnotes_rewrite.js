@@ -7,8 +7,6 @@ Goodnotes 订阅请求重写脚本
 
 [MITM]
 hostname = isi.csan.goodnotes.com,goodenotes6.lovebabyforever.workers.dev
-
-
 */
 
 
