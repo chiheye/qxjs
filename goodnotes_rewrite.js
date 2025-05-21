@@ -3,7 +3,7 @@ Goodnotes 订阅请求重写脚本
 最后更新：2025.5.21 23:15
 
 [rewrite_local]
-^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$\/* url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_headers.js
+^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$\/* url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/main/goodnotes_rewrite.js
 
 [MITM]
 hostname = isi.csan.goodnotes.*
