@@ -6,14 +6,14 @@ Goodnotes 订阅请求重写脚本
 ^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_headers.js
 
 [MITM]
-hostname = isi.csan.goodnotes.com,goodenotes6.lovebabyforever.workers.dev
+hostname = isi.csan.goodnotes.com
 */
 
 
 
 const urlPattern = /^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/;
-const targetUrl = "https://goodenotes6.lovebabyforever.workers.dev/";
-const targetHost = "goodenotes6.lovebabyforever.workers.dev";
+const targetUrl = "https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodenotes.json";
+const targetHost = "raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodenotes.json";
 
 if (urlPattern.test($request.url)) {
     // 修改 Host 头部
