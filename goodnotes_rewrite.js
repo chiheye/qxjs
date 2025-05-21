@@ -13,8 +13,6 @@ hostname = isi.csan.goodnotes.*
 
 
 let body = {
-  "code": 200,
-  "message": "Success",
   "data": {
 	"request_date_ms": 1728463564126,
 	"request_date": "2024-10-09T08:46:04Z",
