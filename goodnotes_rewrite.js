@@ -11,12 +11,7 @@ hostname = isi.csan.goodnotes.com,goodenotes6.lovebabyforever.workers.dev
 
 */
 
-/*
-Goodnotes 订阅请求重写脚本
-最后更新：2025.5.21
 
-功能：将特定 Goodnotes 请求重定向到目标 URL，并修改 Host 头部
-*/
 
 const urlPattern = /^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$/;
 const targetUrl = "https://goodenotes6.lovebabyforever.workers.dev/";
