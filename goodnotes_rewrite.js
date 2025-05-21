@@ -3,7 +3,7 @@ Goodnotes 订阅请求重写脚本
 最后更新：2025.5.19 23:15
 
 [rewrite_local]
-^https:\/\/goodenotes6\.lovebabyforever\.workers\.dev\/ url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_headers.js
+^https:\/\/isi\.csan\.goodnotes.*\/v1\/subscribers\/[a-f0-9\-]{36}$ url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/goodnotes_headers.js
 
 [MITM]
 hostname = isi.csan.goodnotes.com,goodenotes6.lovebabyforever.workers.dev
