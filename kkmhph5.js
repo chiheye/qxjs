@@ -54,7 +54,7 @@ if (body && $response.statusCode === 200) {
         // 规则3: 弹窗接口 - 作为备用安全措施保留，防止意外的弹窗
         else if (url.includes('/comic_pop_ups_h5')) {
             if (obj.data) {
-                obj.data.pop_ups = [0]; // 清空弹窗
+                obj.data.pop_ups = [2]; // 清空弹窗
             }
         }
         
