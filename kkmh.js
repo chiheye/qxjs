@@ -15,7 +15,7 @@
 ^https?:\/\/m.kuaikanmanhua.com\/v1\/vip\/me url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
 ^https?:\/\/.*kkmh.com\/v2\/comic\/detail\/get url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
 ^https?:\/\/m.kuaikanmanhua.com\/v2\/comic\/detail\/get url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
-^https:\/\/m\.kuaikanmanhua\.com\/v2\/kb\/mini\/wallet url 302 https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhkkb.json
+^https:\/\/m\.kuaikanmanhua\.com\/v2\/kb\/mini\/wallet url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhkkb.js
 # >去广告
 ^https?://.*kkmh.com\/v3\/ad\/show url reject-dict
 ^https?://m.kuaikanmanhua.com\/v3\/ad\/show url reject-dict
