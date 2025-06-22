@@ -1,0 +1,27 @@
+{
+  "message" : "ok",
+  "data" : {
+    "activity" : {
+      "activity_word_click_time" : 1,
+      "button_title" : "首充多送500%",
+      "activity_word" : "首充送500%",
+      "activity_img" : "http://f2.kkmh.com/image/191217/BP30KMHc6.png",
+      "is_login" : true,
+      "activity_id" : 984,
+      "login" : true
+    },
+    "wallet" : {
+      "status" : 0,
+      "expire_kkb_tips" : "",
+      "latest_present_expire" : "",
+      "total_charge_cnt" : 100000,
+      "nios_balance" : 100000,
+      "created_at" : 1750589394363,
+      "latest_present_balance" : 100000,
+      "user_id" : 1490695304,
+      "ios_balance" : 100000
+    },
+    "bind_phone" : "*"
+  },
+  "code" : 200
+}
