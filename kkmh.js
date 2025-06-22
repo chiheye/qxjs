@@ -12,9 +12,9 @@
 [rewrite_local]
 # >快看漫画 解锁VIP,去广告+提前看
 ^https?:\/\/.*kkmh.com\/v1\/vip\/me url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
-^https?:\/\/.kuaikanmanhua.com\/v1\/vip\/me url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
+^https?:\/\/m.kuaikanmanhua.com\/v1\/vip\/me url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
 ^https?:\/\/.*kkmh.com\/v2\/comic\/detail\/get url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
-^https?:\/\/.kuaikanmanhua.com\/v2\/comic\/detail\/get url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
+^https?:\/\/m.kuaikanmanhua.com\/v2\/comic\/detail\/get url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
 # >去广告
 ^https?://.*kkmh.com\/v3\/ad\/show url reject-dict
 ^https?://.kuaikanmanhua.com\/v3\/ad\/show url reject-dict
