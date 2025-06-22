@@ -1,5 +1,5 @@
 /**
- * kuaikan_encrypt_buy.js
+ * kkmhcb.js
  * 伪造快看漫画支付成功结果，绕过 encrypt_buy_h5 验证
  */
 

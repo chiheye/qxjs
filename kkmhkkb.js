@@ -1,5 +1,5 @@
 /*
- * kuaikan_wallet.js - 修改快看钱包接口响应
+ * kkmhkkb.js - 修改快看钱包接口响应
  */
 
 let body = $response.body;

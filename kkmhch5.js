@@ -1,5 +1,5 @@
 /*
- * kuaikan_charge_h5.js - 修改快看charge_h5接口返回内容
+ * kkmhch5.js - 修改快看charge_h5接口返回内容
  */
 
 let obj = JSON.parse($response.body);

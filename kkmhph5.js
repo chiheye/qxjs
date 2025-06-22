@@ -1,96 +1,80 @@
-/**
- * kuaikan_comic_price.js
- * 解锁快看漫画所有章节价格为0 + VIP标识
+/*
+ * 功能：解锁快看漫画h5网页端支付窗口
+ * 目标URL：https://m.kuaikanmanhua.com/v2/comicbuy/comic_price_info_h5
  */
 
-let obj = JSON.parse($response.body);
+// 检查是否是目标请求
+if ($request.url.includes("/v2/comicbuy/comic_price_info_h5")) {
+  // 解析服务器返回的原始 JSON 数据
+  let obj = JSON.parse($response.body);
 
-// 强制设置 VIP 状态
-obj.data.vip_info = {
-  vip: true,
-  is_vip: true
-};
+  // 安全地访问 price_info
+  const priceInfo = obj?.data?.price_info;
 
-// 设置当前话已购买状态、价格为 0
-obj.data.single_purchase_index = 0;
-obj.data.entire_preferential = 1;
-obj.data.kk_currency_balance = 999999;
-
-// 清除「支付提示」横幅
-if (obj.data.pic_text_banner) {
-  obj.data.pic_text_banner.text1 = "本章节限时免费";
-  obj.data.pic_text_banner.text2 = "";
-  obj.data.pic_text_banner.pic = "";
-  obj.data.pic_text_banner.speedup_available = false;
-  obj.data.pic_text_banner.bubble_text = [];
-  obj.data.pic_text_banner.text_type = 0;
-}
-
-// 清除 `pic_text_banners` 中所有提示文案
-if (Array.isArray(obj.data.pic_text_banners)) {
-  obj.data.pic_text_banners.forEach(banner => {
-    banner.text1 = "本章节限时免费";
-    banner.text2 = "";
-    banner.pic = "";
-    banner.bubble_text = [];
-    banner.text_type = 0;
-  });
-}
-
-// 解锁所有可批量购买章节
-if (Array.isArray(obj.data.batch_purchase_list)) {
-  obj.data.batch_purchase_list.forEach(item => {
-    // 设置价格全部为0
-    if (item.price_info) {
-      item.price_info.origin_kk_currency = 0;
-      item.price_info.selling_kk_currency = 0;
-      item.price_info.vip_selling_kk_currency = 0;
-      item.price_info.total_discount = 100;
-      item.price_info.icon_text = "已解锁";
-      item.price_info.deduction_texts = ["限免:-全部KK币"];
-      item.price_info.discount = 100;
-      item.price_info.platform_deduction = 0;
+  if (priceInfo) {
+    // 1. 修改VIP信息，伪装成VIP
+    if (priceInfo.vip_info) {
+      priceInfo.vip_info.vip = true;
+      priceInfo.vip_info.is_vip = true;
     }
 
-    // 显示购买文字为“已解锁”
-    item.text = "已解锁";
+    // 2. 修改KK币余额，显示一个较大的数字
+    priceInfo.kk_currency_balance = 999999;
 
-    // 标记已购买状态
-    item.has_read_view = {
-      target_comic_id: 0,
-      show: true,
-      all_read: true,
-      read_num: item.batch_count || 1,
-      has_un_read_remain: false
-    };
-
-    // 修改文本信息
-    if (item.text_info) {
-      item.text_info.vip_discount = 0;
-
-      if (item.text_info.discount_label) {
-        item.text_info.discount_label.left_text = "限免";
-        item.text_info.discount_label.right_text = "0KK币";
-      }
-
-      if (item.text_info.market_text) {
-        item.text_info.market_text.text = "限免中";
-        item.text_info.market_text.discount_text = "";
-      }
+    // 3. 关闭自动支付的弹窗提示
+    if (priceInfo.auto_pay_reminder) {
+      priceInfo.auto_pay_reminder.show = false;
     }
-  });
+
+    // 4. 遍历所有购买选项（本话、10话、剩余全部等）
+    if (Array.isArray(priceInfo.batch_purchase_list)) {
+      priceInfo.batch_purchase_list.forEach(item => {
+        // 修改价格信息
+        if (item.price_info) {
+          item.price_info.origin_kk_currency = 0;
+          item.price_info.selling_kk_currency = 0;
+          item.price_info.vip_selling_kk_currency = 0;
+          item.price_info.platform_deduction = 0;
+          item.price_info.total_discount = 100; // 100% 折扣
+          item.price_info.deduction_texts = ["限时免费"];
+          item.price_info.icon_text = "已解锁";
+        }
+
+        // 修改按钮文案
+        if (item.icon) {
+          item.icon.copywriting = "已拥有";
+        }
+        item.text = `已解锁 (${item.text})`; // 例如: "已解锁 (本话)"
+
+        // 修改文本详情
+        if (item.text_info) {
+          item.text_info.market_text = {
+            text: "限免中",
+            discount_text: ""
+          };
+          if (item.text_info.discount_label) {
+            item.text_info.discount_label.left_text = "限免";
+            item.text_info.discount_label.right_text = "0 KK币";
+          }
+        }
+      });
+    }
+
+    // 如果有单独购买的选项也一并修改
+    if (priceInfo.single_purchase && priceInfo.single_purchase.price_info) {
+        priceInfo.single_purchase.price_info.origin_kk_currency = 0;
+        priceInfo.single_purchase.price_info.selling_kk_currency = 0;
+        priceInfo.single_purchase.price_info.vip_selling_kk_currency = 0;
+    }
+  }
+  
+  // 修改外层 message，方便调试时确认脚本已生效
+  obj.message = "patched by Gemini";
+
+  // 将修改后的对象变回 JSON 字符串，作为新的返回体
+  $done({ body: JSON.stringify(obj) });
+
+} else {
+  // 如果不是目标 URL，不做任何操作
+  $done({});
 }
-
-// 彻底关闭自动支付提醒
-if (obj.data.auto_pay_reminder) {
-  obj.data.auto_pay_reminder.show = false;
-  obj.data.auto_pay_reminder.selected = false;
-}
-
-obj.data.is_auto_pay = true;
-obj.data.autoPay = true;
-
-// 完整解锁完毕
-obj.message = "patched";
-
-$done({ body: JSON.stringify(obj) });
