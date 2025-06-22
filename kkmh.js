@@ -22,7 +22,7 @@
 
 ^https:\/\/m\.kuaikanmanhua\.com\/v2\/kb\/point\/charge_h5\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhch5.js
 
-https:\/\/m\.kuaikanmanhua\.com\/v2\/comicbuy\/(comic_price_info_h5|comic_pop_ups_h5) url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhph5.js
+^https:\/\/m\.kuaikanmanhua\.com\/v2\/comicbuy\/comic_price_info_h5\？ url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhph5.js
 
 ^https:\/\/m\.kuaikanmanhua\.com\/v2\/comicbuy\/encrypt_buy_h5\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhcb.js
 
