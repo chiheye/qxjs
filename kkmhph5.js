@@ -37,13 +37,13 @@ if (body && $response.statusCode === 200) {
               "data": {
                 "status": 0,
                 "balance_enough": true,
-                "has_coupon": false,
-                "origin_kk_currency": 0,
-                "actual_kk_currency": 0,
+                "has_coupon": true,
+                "origin_kk_currency": 1000,
+                "actual_kk_currency": 1000,
                 "discount": 100,
                 "coupon_info": null,
-                "show_auto_pay_tip": false,
-                "coupon_used": false,
+                "show_auto_pay_tip": true,
+                "coupon_used": ftrue,
                 "auto_pay_selected": true,
                 "unlock_success": true // 关键！告诉客户端已成功
               },
@@ -54,7 +54,7 @@ if (body && $response.statusCode === 200) {
         // 规则3: 弹窗接口 - 作为备用安全措施保留，防止意外的弹窗
         else if (url.includes('/comic_pop_ups_h5')) {
             if (obj.data) {
-                obj.data.pop_ups = []; // 清空弹窗
+                obj.data.pop_ups = [0]; // 清空弹窗
             }
         }
         
