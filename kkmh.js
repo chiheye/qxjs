@@ -5,17 +5,19 @@
 软件版本：7.90.0
 下载地址：
 脚本作者：
-更新时间：2025年
-电报频道：https://t.me/GieGie777
+更新时间：2025年6月22日
 问题反馈：
 使用声明：此脚本仅供学习与交流，请在下载使用24小时内删除！请勿在中国大陆转载与贩卖！
 *******************************
 [rewrite_local]
 # >快看漫画 解锁VIP,去广告+提前看
-^https?:\/\/.*kkmh.com\/v1\/vip\/me url script-response-body https://raw.githubusercontent.com/WeiGiegie/666/main/kuaikanmanhua.js
-^https?:\/\/.*kkmh.com\/v2\/comic\/detail\/get url script-request-header https://raw.githubusercontent.com/WeiGiegie/666/main/kuaikanmanhua.js
+^https?:\/\/.*kkmh.com\/v1\/vip\/me url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
+^https?:\/\/.kuaikanmanhua.com\/v1\/vip\/me url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
+^https?:\/\/.*kkmh.com\/v2\/comic\/detail\/get url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
+^https?:\/\/.kuaikanmanhua.com\/v2\/comic\/detail\/get url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
 # >去广告
 ^https?://.*kkmh.com\/v3\/ad\/show url reject-dict
+^https?://.kuaikanmanhua.com\/v3\/ad\/show url reject-dict
 
 [mitm]
 hostname = *.kkmh.com,*kkmh.com,*.kuaikanmanhua.com
