@@ -12,19 +12,22 @@
 [rewrite_local]
 # >快看漫画 解锁VIP,去广告+提前看
 ^https?:\/\/.*kkmh.com\/v1\/vip\/me url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
-^https?:\/\/m\.kuaikanmanhua.com\/v1\/vip\/me url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
+
 ^https?:\/\/.*kkmh.com\/v2\/comic\/detail\/get url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
-^https?:\/\/m\.kuaikanmanhua.com\/v2\/comic\/detail\/get url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
+# >-----------------------------------
+
+^https?:\/\/m\.kuaikanmanhua.com\/v1\/vip\/me url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmh.js
+
 ^https:\/\/m\.kuaikanmanhua\.com\/v2\/kb\/mini\/wallet url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhkkb.js
-^https:\/\/.*kkmh.com\/v2\/kb\/mini\/wallet\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhkkb.js
+
 ^https:\/\/m\.kuaikanmanhua\.com\/v2\/kb\/point\/charge_h5\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhch5.js
-^https:\/\/.*kkmh.com\/v2\/kb\/point\/charge_h5\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhch5.js
-https:\/\/m\.kuaikanmanhua\.com\/v2\/comicbuy\/(comic_price_info_h5|comic_pop_ups_h5) url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhph5.js
-^https:\/\/.*kkmh.com\/v2\/comicbuy\/comic_price_info_h5\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhph5.js
+
+# https:\/\/m\.kuaikanmanhua\.com\/v2\/comicbuy\/(comic_price_info_h5|comic_pop_ups_h5) url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhph5.js
+
 ^https:\/\/m\.kuaikanmanhua\.com\/v2\/comicbuy\/encrypt_buy_h5\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhcb.js
-^https:\/\/.*kkmh.com\/v2\/comicbuy\/encrypt_buy_h5\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhcb.js
+
 ^https:\/\/m\.kuaikanmanhua\.com\/v2\/passport\/user\/me\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhu.js
-^https:\/\/.*kkmh.com\/v2\/passport\/user\/me\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhu.js
+
 
 # >去广告
 ^https?://.*kkmh.com\/v3\/ad\/show url reject-dict
