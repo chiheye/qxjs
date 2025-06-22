@@ -18,6 +18,9 @@
 ^https:\/\/m\.kuaikanmanhua\.com\/v2\/kb\/mini\/wallet\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhkkb.js
 ^https:\/\/m\.kuaikanmanhua\.com\/v2\/kb\/point\/charge_h5\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhch5.js
 ^https:\/\/m\.kuaikanmanhua\.com\/v2\/comicbuy\/comic_price_info_h5\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhph5.js
+^https:\/\/m\.kuaikanmanhua\.com\/v2\/comicbuy\/encrypt_buy_h5\? url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/kkmhcb.js
+
+
 
 # >去广告
 ^https?://.*kkmh.com\/v3\/ad\/show url reject-dict
