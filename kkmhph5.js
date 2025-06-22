@@ -39,13 +39,13 @@ if (body && $response.statusCode === 200) {
         }
         
         // --- 规则2: 拦截购买确认弹窗 ---
-        else if (url.includes('/comic_pop_ups_h5')) {
-            obj.message = "patched by Gemini (pop_ups)";
-            if (obj.data) {
-                // 将弹窗数组清空，欺骗客户端无需任何操作，直接认为购买成功
-                obj.data.pop_ups = [];
-            }
-        }
+        // else if (url.includes('/comic_pop_ups_h5')) {
+        //     obj.message = "patched by Gemini (pop_ups)";
+        //     if (obj.data) {
+        //         // 将弹窗数组清空，欺骗客户端无需任何操作，直接认为购买成功
+        //         obj.data.pop_ups = [];
+        //     }
+        // }
 
         // 返回修改后的响应体
         $done({ body: JSON.stringify(obj) });
