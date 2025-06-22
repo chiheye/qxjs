@@ -18,7 +18,7 @@
 ^https?://.*kkmh.com\/v3\/ad\/show url reject-dict
 
 [mitm]
-hostname = *.kkmh.com,*kkmh.com
+hostname = *.kkmh.com,*kkmh.com,*.kuaikanmanhua.com
 
 *
 *
