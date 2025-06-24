@@ -44,6 +44,14 @@ try {
         obj.has_active_subscription = true;
         obj.has_running_subscription = true;
         obj.eligible_for_pro_features = true;
+        obj.eligible_for_raycast_notes_beta = true;
+        obj.has_better_ai = true;
+        obj.eligible_for_ai = true;
+        obj.eligible_for_file_search_beta = true;
+        obj.eligible_for_bext = true;
+        obj.has_developer_extensions = true;
+        obj.eligible_for_cloud_sync = true;
+        obj.publishing_bot = true;
         
         // --- 修改 mobile_subscription 对象内部 ---
         if (obj.mobile_subscription) {
