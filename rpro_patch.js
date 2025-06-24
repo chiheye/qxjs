@@ -2,7 +2,6 @@
 ------------------------------------------
 # R-model 解锁
 # 更新日期：2025.06.24
-# 登录账户后先试用订阅（选择高级版本试用，记得试用后立马取消订阅）
 ------------------------------------------
 [Script]
 Raycast_pro = type=http-response,pattern=^https:\/\/backend\.raycast\.com\/api\/v1\/(me|ai\/models|me\/sync.*)$,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/rpro_patch.js
@@ -52,11 +51,25 @@ try {
         obj.has_developer_extensions = true;
         obj.eligible_for_cloud_sync = true;
         obj.publishing_bot = true;
+        obj.has_better_ai = true;
+        obj.eligible_for_windows = true;
+        obj.can_modify_subscription_interval = true;
+        obj.eligible_for_hyper_key = true;
+        obj.broken_raycast_client = true;
+        obj.eligible_for_gpt4 = true;
+        obj.eligible_for_developer_hub = true;
+        obj.has_contributions_or_extensions = true;
+        obj.can_use_referral_codes = true;
+        obj.any_organization_has_active_subscription = true;
+        obj.eligible_for_application_settings = true;
+        
         
         // --- 修改 mobile_subscription 对象内部 ---
         if (obj.mobile_subscription) {
             obj.mobile_subscription.status = "active"; // 将 "expired" 改为 "active"
             obj.mobile_subscription.running = true;
+            obj.mobile_subscription.interval =  "year";
+            obj.mobile_subscription.has_better_ai = true;
         }
 
         // --- 保留原始的核心修改 ---
