@@ -1,2 +1,2 @@
 # qxjs
-qx脚本
+qxjs
