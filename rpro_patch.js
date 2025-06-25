@@ -62,6 +62,7 @@ try {
         obj.can_use_referral_codes = true;
         obj.any_organization_has_active_subscription = true;
         obj.eligible_for_application_settings = true;
+        obj.admin = true;
         
         
         // --- 修改 mobile_subscription 对象内部 ---
