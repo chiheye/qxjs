@@ -63,11 +63,21 @@ try {
         obj.any_organization_has_active_subscription = true;
         obj.eligible_for_application_settings = true;
         obj.admin = true;
+        obj.stripe_subscription_status = true;
+        obj.can_apply_for_free_trial = fasle;
+        obj.stripe_subscription_id = "1FC04803-9EF4-4D94-AF4D-77EE603E23AC";
+        obj.slack_community_user_id = "1FC04803-9EF4-4D94-AF4D-77EE603E23AC";
+        obj.stripe_subscription_interval = true;
+        obj.any_organization_has_better_ai = true;
+        obj.saml = true;
+        obj.subscription = true;
+        obj.eligible_for_ai_beta_features = true;
+        
         
         
         // --- 修改 mobile_subscription 对象内部 ---
         if (obj.mobile_subscription) {
-            obj.mobile_subscription.status = "active"; // 将 "expired" 改为 "active"
+            obj.mobile_subscription.status = "active";
             obj.mobile_subscription.running = true;
             obj.mobile_subscription.interval =  "year";
             obj.mobile_subscription.has_better_ai = true;
