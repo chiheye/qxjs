@@ -9,7 +9,7 @@
 [rewrite_local]
 ^https://mobile\.ximalaya\.com/product/promotion/v1/album/price/ts-\d+ url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/xmly.js
 [mitm]
-host=*.ximalaya.com
+hostname=*.ximalaya.com
  */
 
 // 获取原始的服务器响应体
