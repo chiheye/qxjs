@@ -7,7 +7,7 @@
  *
  * QuanX重写规则:
 [rewrite_local]
-^https://mobile\.ximalaya\.com/product/promotion/v1/album/price/ts-\d+ script-response-body url https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/xmly.js
+^https://mobile\.ximalaya\.com/product/promotion/v1/album/price/ts-\d+ url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/xmly.js
 [mitm]
 host=*.ximalaya.com
  */
