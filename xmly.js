@@ -6,7 +6,10 @@
  * 使用方法: 配合QuanX重写规则使用。
  *
  * QuanX重写规则:
- * ^https://mobile\.ximalaya\.com/product/promotion/v1/album/price/ts-\d+ script-response-body xmly.js
+[rewrite_local]
+^https://mobile\.ximalaya\.com/product/promotion/v1/album/price/ts-\d+ script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/xmly.js
+[mitm]
+host=*.ximalaya.com
  */
 
 // 获取原始的服务器响应体
