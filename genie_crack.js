@@ -5,8 +5,7 @@
 更新时间: 2026-02-20
 
 [rewrite_local]
-^https:\/\/genie-production-yfvxbm4e6q-uc\.a\.run\.app\/(adapty\/user-profile|payment\/subscription-status|v4\/credits\/me) url script-response-body genie_crack.js
-
+^https:\/\/genie-production-yfvxbm4e6q-uc\.a\.run\.app\/(adapty\/user-profile|payment\/subscription-status|v4\/credits\/me) url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/genie_crack.js
 [mitm]
 hostname = genie-production-yfvxbm4e6q-uc.a.run.app
 */
