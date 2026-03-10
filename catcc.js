@@ -4,7 +4,7 @@
  *******************************
 [rewrite_local]
 # > CatVPN节点提取
-^https?:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects url script-response-body https://raw.githubusercontent.com/WeiGiegie/666/main/catvpn_extract.js
+^https?:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/catcc.js
 
 [mitm]
 hostname = firebaseremoteconfig.googleapis.com
