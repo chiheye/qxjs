@@ -7,10 +7,10 @@
  * * === Quantumult X 配置 ===
  * * [rewrite_local]
  * # 抓取九号出行签到 Token
- * ^https:\/\/cn-cbu-gateway\.ninebot\.com\/portal\/api\/user-sign\/.* url script-request-header ninebot.js
+ * ^https:\/\/cn-cbu-gateway\.ninebot\.com\/portal\/api\/user-sign\/.* url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/ninebot.js
  * * [task_local]
  * # 每日自动签到（每天上午 8:00 执行）
- * 0 8 * * * ninebot.js, tag=九号出行签到, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Car.png, enabled=true
+ * 0 9 * * * https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/ninebot.js, tag=九号出行签到, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Car.png, enabled=true
  * * [mitm]
  * hostname = *.ninebot.com
  */
