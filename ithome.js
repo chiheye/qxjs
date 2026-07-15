@@ -13,7 +13,7 @@ hostname = napi.ithome.com
 [rewrite_local]
 # 获取 Token（第一次使用，获取后可禁用）
 # 触发方式：在 IT之家 App 内打开签到页面即可触发
-^https?://napi\.ithome\.com/api/usersign/(sign|getsigninfo) url script-request-header ithome_sign.js
+^https?://napi\.ithome\.com/api/usersign/(sign|getsigninfo) url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/ithome.js
 
 [task_local]
 # 每天 9 点执行签到
