@@ -8,12 +8,12 @@
 // Quantumult X 配置说明：
 /*
 [MITM]
-hostname = napi.ithome.com
+hostname = *.napi.ithome.com
 
 [rewrite_local]
 # 获取 Token（第一次使用，获取后可禁用）
 # 触发方式：在 IT之家 App 内手动点击一次“签到”
-^https?://napi\.ithome\.com/api/usersign/sign url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/ithome.js
+^https?:\/\/napi\.ithome\.com/api/usersign/sign url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/ithome.js
 
 [task_local]
 # 每天 9 点执行签到
