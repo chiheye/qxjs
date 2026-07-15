@@ -3,22 +3,22 @@
  * @author chiheye
  * @update 2026.07.15
  * @version 1.4
- ******************************************/
+ ******************************************
 
 // Quantumult X 配置说明：
-/*
+******************************************
 [MITM]
 hostname = napi.ithome.com
-
+******************************************
 [rewrite_local]
 # 获取 Token（第一次使用，获取后可禁用）
 # 触发方式：在 IT之家 App 内打开签到页面即可触发
 ^https?://napi\.ithome\.com/api/usersign/(sign|getsigninfo) url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/ithome.js
-
+******************************************
 [task_local]
 # 每天 9 点执行签到
 0 9 * * * https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/ithome.js, tag=ITHome签到, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/ithome.png, enabled=true
-*/
+******************************************/
 
 const $ = new Env("ITHome签到");
 
