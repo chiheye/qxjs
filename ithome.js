@@ -2,7 +2,7 @@
  * @name ITHome 每日签到
  * @author chiheye
  * @update 2026.07.15
- * @version 1.2
+ * @version 1.3
  ******************************************/
 
 // Quantumult X 配置说明：
