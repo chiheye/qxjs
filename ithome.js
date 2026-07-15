@@ -2,17 +2,18 @@
  * @name ITHome 每日签到
  * @author chiheye
  * @update 2026.07.15
- * @version 1.1
+ * @version 1.2
  ******************************************/
 
 // Quantumult X 配置说明：
 /*
 [MITM]
-hostname = napi.ithome.com, my.ruanmei.com
+hostname = napi.ithome.com
 
 [rewrite_local]
 # 获取 Token（第一次使用，获取后可禁用）
-^https?://(napi\.ithome\.com|my\.ruanmei\.com)/api/ url script-request-header ithome_sign.js
+# 触发方式：在 IT之家 App 内手动点击一次“签到”
+^https?://napi\.ithome\.com/api/usersign/sign url script-request-header ithome_sign.js
 
 [task_local]
 # 每天 9 点执行签到
@@ -24,41 +25,53 @@ const $ = new Env("ITHome签到");
 const SIGN_API = "https://napi.ithome.com/api/usersign/sign";
 const TOKEN_KEY = "ithome_token";
 
-// 识别当前运行环境：判断是 Rewrite 触发还是 定时任务 触发
 const isRequest = typeof $request !== "undefined";
 
 if (isRequest) {
     // ====================== 获取 Token (Rewrite) ======================
-    if ($request.headers) {
-        const headers = $request.headers;
-        // 兼容大小写
-        const authorization = headers["Authorization"] || headers["authorization"];
-        
-        if (authorization) {
-            $.setdata(authorization, TOKEN_KEY);
-            $.msg("ITHome 签到", "✅ Token 获取成功", "已保存，可以去禁用获取 Token 的 Rewrite 规则了");
-            console.log(`✅ ITHome Token 已保存: ${authorization}`);
+    // 由于抓包显示 Token 在 URL 参数 userHash 中，我们优先从 URL 提取
+    let token = "";
+    
+    if ($request.url) {
+        const urlMatch = $request.url.match(/userHash=([^&]+)/);
+        if (urlMatch && urlMatch[1]) {
+            // 将类似 Bearer%20xxx 解码为 Bearer xxx
+            token = decodeURIComponent(urlMatch[1]);
         }
     }
-    $.done(); // 获取完立即结束，避免执行下方签到逻辑
+    
+    // 兼容逻辑：如果 URL 没找到，尝试从请求头找
+    if (!token && $request.headers) {
+        const headers = $request.headers;
+        token = headers["Authorization"] || headers["authorization"];
+    }
+
+    if (token && token.startsWith("Bearer")) {
+        $.setdata(token, TOKEN_KEY);
+        $.msg("ITHome 签到", "✅ Token 获取成功", "已保存，可以去 QX 禁用获取 Token 的 Rewrite 规则了");
+        console.log(`✅ ITHome Token 已保存: ${token}`);
+    }
+    $.done(); 
 } else {
     // ====================== 执行签到 (Task) ======================
     const token = $.getdata(TOKEN_KEY);
 
     if (!token) {
-        $.msg("ITHome 签到", "❌ 未找到 Token", "请打开 ITHome App 登录并刷新页面，获取 Token 后重新触发");
+        $.msg("ITHome 签到", "❌ 未找到 Token", "请开启 Rewrite 并在 App 内手动签到一次来获取");
         $.done();
     } else {
+        // 根据抓包数据，构造带 userHash 的 URL
         const url = `${SIGN_API}?userHash=${encodeURIComponent(token)}`;
 
+        // 完全按照抓包提供的 headers 构造
         const headers = {
             "Accept-Encoding": "gzip, deflate, br",
             "Accept": "*/*",
             "Connection": "keep-alive",
+            "Content-Type": "application/x-www-form-urlencoded",
             "Host": "napi.ithome.com",
             "User-Agent": "ITHomeClient/9.31 (iPhone; iOS 18.3.2; Scale/3.00)",
-            "Accept-Language": "zh-Hans-CN;q=1",
-            "Authorization": token // 补充请求头，部分接口强校验该字段
+            "Accept-Language": "en-US;q=1, zh-Hans-US;q=0.9"
         };
 
         $.get({ url, headers }, (err, resp, data) => {
@@ -71,11 +84,17 @@ if (isRequest) {
             try {
                 const body = JSON.parse(data);
                 
-                if (body.code === 0 || /成功|已签到/.test(body.message)) {
-                    const exp = body.data?.exp ? ` +${body.data.exp}经验` : "";
-                    $.msg("ITHome 签到", "🎉 签到成功", exp || body.message || "今日签到完成");
+                // 根据新的 JSON 响应体格式进行解析
+                if (body.ok === 1 || body.title === "签到成功") {
+                    // 提取金币奖励
+                    const reward = (body.message && body.message["签到奖励"]) ? body.message["签到奖励"] : "今日签到完成";
+                    const totalDays = body.cdays ? `已连续签到 ${body.cdays} 天` : "";
+                    
+                    $.msg("ITHome 签到", `🎉 ${body.title || "签到成功"}`, `${reward}\n${totalDays}`);
+                } else if (/已经签到/.test(JSON.stringify(body))) {
+                    $.msg("ITHome 签到", "⚠️ 今日已签到", "请勿重复签到");
                 } else {
-                    $.msg("ITHome 签到", "⚠️ 签到提示", body.message || "未知状态");
+                    $.msg("ITHome 签到", "⚠️ 签到提示", JSON.stringify(body));
                 }
             } catch (e) {
                 $.msg("ITHome 签到", "❌ 响应解析失败", data);
