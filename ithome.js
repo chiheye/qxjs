@@ -17,7 +17,7 @@ hostname = napi.ithome.com
 
 [task_local]
 # 每天 9 点执行签到
-0 9 * * * ithome_sign.js, tag=ITHome签到, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/ithome.png, enabled=true
+0 9 * * * https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/ithome.js, tag=ITHome签到, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/ithome.png, enabled=true
 */
 
 const $ = new Env("ITHome签到");
