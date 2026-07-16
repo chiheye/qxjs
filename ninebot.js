@@ -15,7 +15,7 @@
 const CACHE_KEY = "Ninebot.Accounts";
 const BASE_URL = "https://cn-cbu-gateway.ninebot.com";
 
-// 完美契合你抓包的请求头
+// 抓包的请求头
 function getHeaders(token, deviceId) {
     return {
         "Accept": "application/json, text/plain, */*",
@@ -47,9 +47,9 @@ function saveAccount(deviceId, token) {
     const newRecord = `${deviceId}:${token}`;
     const index = accounts.findIndex(a => a.startsWith(deviceId + ":"));
     if (index >= 0) {
-        accounts[index] = newRecord; // 更新老 Token
+        accounts[index] = newRecord;
     } else {
-        accounts.push(newRecord); // 增加新账号
+        accounts.push(newRecord);
     }
     $prefs.setValueForKey(accounts.join(";"), CACHE_KEY);
 }
