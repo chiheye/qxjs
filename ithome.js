@@ -2,16 +2,18 @@
  * @name ITHome 每日签到
  * @author chiheye
  * @update 2026.08.25
- * @version 1.6.1
+ * @version 1.7
  ******************************************
 
+// Quantumult X 配置：
+******************************************
 [MITM]
 hostname = napi.ithome.com
-
+******************************************
 [rewrite_local]
-# 获取 userHash：打开 App → 进入签到页
+# 获取凭证：打开 IT之家 App → 进入签到页面
 ^https:\/\/napi\.ithome\.com\/api\/usersign\/getsigninfo url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/ithome.js
-
+******************************************
 [task_local]
 0 9 * * * https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/ithome.js, tag=ITHome签到, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/ithome.png, enabled=true
 ******************************************/
@@ -21,36 +23,56 @@ const $ = new Env("ITHome签到");
 const SIGN_API = "https://napi.ithome.com/api/usersign/sign";
 const TOKEN_KEY = "ithome_userHash";
 
-// ---------- 获取 userHash ----------
-if (typeof $request !== "undefined" && $request.url) {
-  try {
+// ====================== 获取凭证 ======================
+if (typeof $request !== "undefined") {
+  let userHash = null;
+
+  // 1) 优先从 URL 取 userHash（你给的这种：userHash=Bearer%20eyJ...）
+  if ($request.url) {
     const m = $request.url.match(/[?&]userHash=([^&]+)/i);
     if (m && m[1]) {
-      const userHash = decodeURIComponent(m[1].trim());
-      if (userHash.length > 10) {
-        const old = $.getdata(TOKEN_KEY);
-        $.setdata(userHash, TOKEN_KEY);
-        if (old !== userHash) {
-          $.msg("ITHome", "✅ userHash 获取成功", "可禁用获取凭证的 rewrite");
-        }
-        console.log("userHash saved: " + userHash.substring(0, 20) + "...");
-      } else {
-        $.msg("ITHome", "❌ userHash 无效", "请重新打开签到页");
-      }
-    } else {
-      console.log("no userHash in: " + $request.url);
+      userHash = decodeURIComponent(m[1].trim());
     }
-  } catch (e) {
-    console.log("get hash error: " + e);
+  }
+
+  // 2) 没有则从 Authorization 头取（Bearer xxx）
+  if (!userHash && $request.headers) {
+    const h = $request.headers;
+    const auth =
+      h["Authorization"] ||
+      h["authorization"] ||
+      h["AUTHORIZATION"];
+    if (auth && /^Bearer\s+\S+/i.test(auth)) {
+      userHash = auth.trim();
+    }
+  }
+
+  if (userHash && userHash.length > 20) {
+    // 统一成 "Bearer xxx" 形式（若只有 JWT 则补上）
+    if (!/^Bearer\s+/i.test(userHash) && userHash.indexOf(".") > 0) {
+      userHash = "Bearer " + userHash;
+    }
+    const old = $.getdata(TOKEN_KEY);
+    $.setdata(userHash, TOKEN_KEY);
+    if (old !== userHash) {
+      $.msg("ITHome", "✅ 凭证获取成功", "可禁用 rewrite，保留定时任务即可");
+    }
+    console.log("saved userHash: " + userHash.substring(0, 30) + "...");
+  } else {
+    console.log("未获取到有效凭证, url=" + ($request.url || ""));
   }
   $.done();
 }
 
-// ---------- 签到 ----------
+// ====================== 执行签到 ======================
 const userHash = $.getdata(TOKEN_KEY);
 
 if (!userHash) {
-  $.msg("ITHome 签到", "❌ 未找到 userHash", "请打开 IT之家 App 进入签到页获取凭证");
+  $.msg(
+    "ITHome 签到",
+    "❌ 未找到凭证",
+    "请打开 IT之家 App 进入签到页获取（会触发 getsigninfo）"
+  );
   $.done();
 }
 
@@ -63,7 +85,9 @@ const headers = {
   Connection: "keep-alive",
   "Content-Type": "application/x-www-form-urlencoded",
   Host: "napi.ithome.com",
-  "User-Agent": "ITHomeClient/9.32 (iPhone; iOS 18.3.2; Scale/3.00)"
+  "User-Agent": "ITHomeClient/9.32 (iPhone; iOS 18.3.2; Scale/3.00)",
+  // 部分环境也会校验头，一并带上
+  Authorization: userHash
 };
 
 $.get({ url: url, headers: headers }, function (err, resp, data) {
@@ -96,7 +120,7 @@ $.get({ url: url, headers: headers }, function (err, resp, data) {
     } else if (body.ok === 0) {
       $.msg("ITHome 签到", "✅ 今日已签到", body.title || body.msg || "明天再来吧");
     } else {
-      var tip = body.title || body.msg || String(data).substring(0, 120);
+      const tip = body.title || body.msg || String(data).substring(0, 120);
       $.msg("ITHome 签到", "⚠️ 签到异常", tip);
     }
   } catch (e) {
@@ -107,7 +131,7 @@ $.get({ url: url, headers: headers }, function (err, resp, data) {
   $.done();
 });
 
-// ---------- Env ----------
+// ====================== Env ======================
 function Env(name) {
   this.name = name;
   this.getdata = function (key) {
