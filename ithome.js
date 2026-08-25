@@ -22,7 +22,7 @@ hostname = napi.ithome.com
 
 const $ = new Env("ITHome签到");
 
-const SIGN_API = "https://napi.ithome.com/api/usersign/sign";
+const SIGN_API = "https://napi.ithome.com/api/usersign/getsigninfo";
 const TOKEN_KEY = "ithome_userHash";
 
 // ====================== 获取 userHash ======================
