@@ -1,10 +1,9 @@
 /*
-2024.7.22 15.32 
-18k漫画 https://18akmanhua.com
 [rewrite_local] 
-https:\/\/18akmanhua\.com\/api\/(chaptersDetails|memberDetails) url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/mh.js 
+https:\/\/18akmanhua08\.top\/api\/(chaptersDetails|memberDetails) url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/mh.js
+https:\/\/18akmanhua\.com\/api\/(chaptersDetails|memberDetails) url script-response-body https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/mh.js
 [mitm] 
-hostname = 18akmanhua.com 
+hostname = 18akmanhua08.top,18akmanhua.com
 */
  
 var _0xody='jsjiami.com.v7';
@@ -841,4 +840,3 @@ var version_ = 'jsjiami.com.v7';
  }
  (t,e)
 }
- 
