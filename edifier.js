@@ -12,10 +12,10 @@ hostname = bbs-user-api.edifier.com
 ******************************************
 [rewrite_local]
 # 获取凭证：打开漫步者 App → 进入签到页面并手动签到一次
-^https:\/\/bbs-user-api\.edifier\.com\/api\/operation\/signin\/v1\/ url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/
+^https:\/\/bbs-user-api\.edifier\.com\/api\/operation\/signin\/v1\/ url script-request-header https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/edifier.js
 ******************************************
 [task_local]
-0 9 * * * edifier.js, tag=漫步者签到, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/edifier.png, enabled=true
+0 9 * * * https://raw.githubusercontent.com/chiheye/qxjs/refs/heads/main/edifier.js, tag=漫步者签到, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/edifier.png, enabled=true
 ******************************************/
 
 /**
